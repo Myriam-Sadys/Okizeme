@@ -52,12 +52,22 @@ class ScrollViews : MonoBehaviour
     {
         if (data.UpdateHand)
         {
+            GalleryCards = emptyScrollView(GalleryCards);
+            HandCards = emptyScrollView(HandCards);
             foreach (CardData.Card c in data.GalleryCards)
                 InstantiateGalleryCards(c);
             foreach (CardData.Card c in data.HandCards)
                 InstantiateHandCards(c);
             data.UpdateHand = false;
         }
+    }
+
+    List<GameObject> emptyScrollView(List<GameObject> scrollView)
+    {
+        foreach (GameObject g in scrollView)
+            Destroy(g);
+        scrollView.Clear();
+        return scrollView;
     }
 
     void onCardClickedGallery(Card clickedCard)

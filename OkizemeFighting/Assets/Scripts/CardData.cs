@@ -23,9 +23,11 @@ public class CardData : MonoBehaviour {
         public int assist_call_cost;
         public List<FightingMoves> fighting_moves;
     }
-    public Transform DeckScrollView; // gallery scrollview
+    public Transform DeckScrollView;
     public GameObject DeckPrefab;
     public GameObject DeckSelect;
+    public Text ProfileName;
+    public Text ProfileAdress;
 
     private string APIurl;
     private List<Card> handCards;
@@ -75,15 +77,24 @@ public class CardData : MonoBehaviour {
         set { updateHand = value; }
     }
 
+    private int totalCards;
+    public int TotalCards
+    {
+        get { return totalCards; }
+        set { totalCards = value; }
+    }
+
 
     void Start()
     {
+        TotalCards = 0;
         UpdateHand = false;
         HandCards = new List<Card>();
         GalleryCards = new List<Card>();
         APIurl = "http://api.okizeme.dahobul.com/";
         Decks = new List<Deck>();
         StartCoroutine(GetCardsFromAPI());
+        StartCoroutine(SetAcountInformation());
     }
 
     void Update()
@@ -104,10 +115,24 @@ public class CardData : MonoBehaviour {
                 if (DeckId != null)
                     StartCoroutine(GetDeck(DeckId, smalldata[i]["name"]));
             }
-            AddNewDeckButton();
+            //AddNewDeckButton();
             //ids.Add(smalldata[i]["_id"]["$oid"]);
         }
     }
+
+    public IEnumerator SetAcountInformation()
+    {
+        WWWForm form = new WWWForm();
+        UnityWebRequest www;
+
+        form.AddField("token", Token);
+        www = UnityWebRequest.Post(APIurl + "token_info", form);
+        yield return www.SendWebRequest();
+        var data = JSON.Parse(www.downloadHandler.text);
+        ProfileName.text = data["data"]["username"];
+        ProfileAdress.text = data["data"]["email_address"];
+    }
+
 
     IEnumerator GetDeck(string DeckId, string DeckName)
     {
@@ -120,6 +145,7 @@ public class CardData : MonoBehaviour {
         yield return www.SendWebRequest();
         var data = JSON.Parse(www.downloadHandler.text);
         var cardsdata = data["data"]["cards"];
+        TotalCards += cardsdata.Count;
         List<string> ids = new List<string>();
         for (int i = 0; i != cardsdata.Count; i++)
             ids.Add(cardsdata[i]["$oid"]);
@@ -140,32 +166,6 @@ public class CardData : MonoBehaviour {
         g.GetComponent<Button>().onClick.AddListener(() => this.OnDeckClick(deck.Cards));
     }
 
-    IEnumerator OLD_GetCardsFromAPI()
-    {
-        UnityWebRequest www = new UnityWebRequest(APIurl + "cards_info");
-        yield return www.SendWebRequest();
-        if (!string.IsNullOrEmpty(www.downloadHandler.text))
-        {
-            var data = JSON.Parse(www.downloadHandler.text);
-            var smalldata = data["data"];
-            List<string> ids = new List<string>();
-            for (int i = 0; i != smalldata.Count; i++)
-                ids.Add(smalldata[i]["_id"]["$oid"]);
-            for (int i = 0; i != ids.Count; i++)
-            {
-                string tmp = APIurl + "cards_info/" + ids[i];
-                UnityWebRequest wwwCardID = UnityWebRequest.Get(APIurl + "cards_info/" + ids[i]);
-                //StartCoroutine(WaitForRequest(wwwCardID));
-                //StartCoroutine(CreateNewCard(wwwCardID));
-            }
-        }
-    }
-
-    // ANIME NOTES
-    // kaguya-sama : love is war
-    // megalo box
-    // hinamatsuri
-
     IEnumerator CreateNewCard(UnityWebRequest www, List<CardData.Card> DeckCards)
     {
         yield return www.SendWebRequest();
@@ -173,7 +173,8 @@ public class CardData : MonoBehaviour {
         var IdCardValues = cardData["data"];
         Card c = new Card();
 
-        c.id = IdCardValues["_id"]["$oid"];
+        // TODO : make a better random part
+        c.id = IdCardValues["_id"]["$oid"] + Random.Range(0f,1000f).ToString();
         c.name = IdCardValues["name"];
         c.description = IdCardValues["description"];
         c.type = IdCardValues["type"];

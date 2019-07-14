@@ -69,7 +69,7 @@ public class Connection : MonoBehaviour {
 
         if (IsValidEmail(UserAdress))
         {
-            if (CreateAccount)
+            if (InputFields.Count > 2)
             {
                 UserName = InputFields.Find(x => x.name == "UserNameInputField").text;
                 ConfirmPassword = InputFields.Find(x => x.name == "ConfirmPasswordInputField").text;
@@ -84,6 +84,10 @@ public class Connection : MonoBehaviour {
             else
                 Login();
             Debug.Log("Exit conditions : " + Time.time);
+        }
+        else
+        {
+            ErrorMessage("Adress Invalid");
         }
     }
 
@@ -101,7 +105,10 @@ public class Connection : MonoBehaviour {
         yield return www.SendWebRequest();
 
         (LoadingScreen.GetComponent(typeof(LoadingBar)) as LoadingBar).Hide();
-        ConnectAccount(www.downloadHandler.text);
+        if (string.IsNullOrEmpty(www.downloadHandler.text))
+            ErrorMessage("Connection Impossible");
+        else
+            ConnectAccount(www.downloadHandler.text);
         Debug.Log("WWW : " + www.downloadHandler.text);
     }
 

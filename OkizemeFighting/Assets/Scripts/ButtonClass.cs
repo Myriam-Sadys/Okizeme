@@ -74,4 +74,9 @@ public class ButtonClass : MonoBehaviour {
             changeBorder = true;
         }
     }
+
+    public void exitGame()
+    {
+        Application.Quit();
+    }
 }

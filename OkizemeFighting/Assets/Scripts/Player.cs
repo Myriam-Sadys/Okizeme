@@ -40,31 +40,44 @@ public class Player : MonoBehaviour
     private bool IsBlocking = false;
     public GameObject projectile;
     public bool ProjectileLaunched = false;
+    //private AI ai;
+    public bool AiActivated = true;
 
     void Start () {
         currentPlayerHealth = PlayerHealth;
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        // Setting des variables
-        GetComponent<SpriteRenderer>().flipX = !facingRight; // Joueur regarde à gauche ou à droite ?
-        GainZemePoints(0); // Set la barre de Zeme Points
+        GetComponent<SpriteRenderer>().flipX = !facingRight;
+        GainZemePoints(0);
+        if (!PlayerControlled)
+        {
+            Vector3 pos = transform.position;
+            //ai = gameObject.AddComponent<AI>() as AI;
+            PlayerSpeed = 20.0f;
+        }
     }
 
     // Update is called once per frame
     void FixedUpdate () {
         facingRight = transform.position.x <= Enemy.transform.position.x;
-        GetComponent<SpriteRenderer>().flipX = !facingRight; // Update la rotation du joueur (gauche ou droite ?)
+        GetComponent<SpriteRenderer>().flipX = !facingRight;
         if (!PlayerControlled) {
-            // Si c'est pas le joueur, return directement
+            /*if (!ai) {
+                Debug.Log("AI NOT SET");
+                return;
+            }
+            if (AiActivated) {
+                ai.TakeDecision(this);
+            }*/
             return;
         }
         float inputHorizontal = Input.GetAxis("Horizontal");
+
+        //Store the current vertical input in the float moveVertical.
         float moveVertical = Input.GetAxis("Vertical");
-        // Mouvement
 
         if (moveVertical < 0 && CanMove()) {
             // CROUCH
-            // Lance l'animation de crouch
             anim.SetTrigger("Crouch");
         }
         if (moveVertical > 0 && CanMove() && !IsJumping) {
@@ -77,7 +90,6 @@ public class Player : MonoBehaviour
         }
 
         if (inputHorizontal == 0.0f && moveVertical == 0.0f) {
-            // Si le joueur ne veut pas bouger, on reset l'animation d'idle
             anim.SetTrigger("Idle");
         }
         if (CanMove()) {
@@ -91,50 +103,52 @@ public class Player : MonoBehaviour
             // rb2d.MovePosition(rb2d.position + movement * Time.fixedDeltaTime);
 
             if (inputHorizontal > 0.0f) {
-                // Joystick à droite
                 if (facingRight) {
                     anim.SetTrigger("MoveForward");
                 }
                 else {
                     anim.SetTrigger("MoveBackward");
-                    IsBlocking = true;
                 }
             }
             if (inputHorizontal < 0.0f) {
-                // Joystick à gauche
                 if (facingRight) {
                     anim.SetTrigger("MoveBackward");
-                    IsBlocking = true;
                 }
                 else {
                     anim.SetTrigger("MoveForward");
                 }
+                IsBlocking = true;
             }
         }
         /*
          * l -> Prends des dégâts
-         * M -> Ennemi prends des dégâts
-         * o -> Gagne des ZP
-         * p -> Ennemi gagne des ZP
-         * MAJ gauche -> bloque
-         * MAJ droit -> Ennemi bloque
-         * R -> Reset des attaques
-         * k -> Coup de poing
-         * i -> Projectile
+M -> Ennemi prends des dégâts
+o -> Gagne des ZP
+p -> Ennemi gagne des ZP
+MAJ gauche -> bloque
+MAJ droit -> Ennemi bloque
+R -> Reset des attaques
+k -> Coup de poing
+i -> Projectile
          */
         if (Input.GetButtonDown("AttackA") && !IsAttacking) {
             // LIGHT ATTACK
             anim.SetTrigger("AttackA");
+            //IsAttacking = true;
             if (Vector2.Distance(transform.position, Enemy.transform.position) < 100.0f) {
-                Hit();
+                Enemy.TakeDamage(50);
+                GainZemePoints(7);
             }
         }
         if (Input.GetButtonDown("AttackB") && !ProjectileLaunched)
         {
-            // EX MOVE - Haoken
+            // EX MOVE
             //GainZemePoints(-50);
             anim.SetTrigger("AttackB");
             SpawnProjectile();
+            /*if (Vector2.Distance(transform.position, Enemy.transform.position) < 100.0f) {
+                Enemy.TakeDamage(250);
+            }*/
         }
         if (Input.GetButton("Block"))
         {
@@ -148,20 +162,21 @@ public class Player : MonoBehaviour
         }
 
         //DEBUG
-        if (Input.GetKeyDown("l")) { // Joueur prends des dégâts
+        if (Input.GetKeyDown("l")) {
             TakeDamage(25);
         }
-        if (Input.GetKeyDown("m")) { // Ennemi prends des dégâts
+
+        if (Input.GetKeyDown("m")) {
             Enemy.TakeDamage(25);
         }
-        if (Input.GetKeyDown("o")) { // Joueur gagne des Zeme Points
+        if (Input.GetKeyDown("o")) {
             GainZemePoints(10);
         }
-        if (Input.GetKeyDown("p")) { // Ennemi gagne des Zeme Points
+        if (Input.GetKeyDown("p")) {
             Enemy.GainZemePoints(10);
         }
         if (Input.GetButton("BlockEnemy"))
-        { // Ennemi bloque
+        {
             // MANUAL BLOCK
             Enemy.IsBlocking = true;
             Enemy.anim.SetTrigger("HitBlocking_Start");
@@ -177,13 +192,6 @@ public class Player : MonoBehaviour
             Enemy.IsAttacking = false;
         }
     }
-
-    void Hit()
-    { // Le coup a touché : cette fonction est appelée
-        Enemy.TakeDamage(50);
-        GainZemePoints(7);
-        // On pourrait mettre les SFX ici
-    }
     bool CanMove() {
         return (State == PlayerState.STANDING);
     }
@@ -197,7 +205,6 @@ public class Player : MonoBehaviour
     {
         return (IsAttacking);
     }
-
     public void TakeDamage(int amount) {
         if (IsBlocking)
         {
@@ -235,7 +242,7 @@ public class Player : MonoBehaviour
     }
 
     public void SpawnProjectile()
-    { // Le hadoken, spawn une instance de la classe Projectile
+    {
         Vector3 pos = transform.position;
         pos.x += 50;
         pos.y += 80;

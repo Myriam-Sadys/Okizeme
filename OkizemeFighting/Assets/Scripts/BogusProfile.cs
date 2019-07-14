@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Networking;
+using SimpleJSON;
 
 public class BogusProfile : MonoBehaviour {
-    public Transform GalleryScrollView; // gallery scrollview
+    public Transform GalleryScrollView;
     public GameObject cardPrefab;
     public CardData data;
     public RawImage displayedCard;
     public GameObject windowCard;
     public Canvas LoadingScreen;
+    public Canvas LogoAnimation;
 
     private bool GalleryFilled;
     private string _token;
@@ -23,7 +26,8 @@ public class BogusProfile : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        (LoadingScreen.GetComponent(typeof(LoadingBar)) as LoadingBar).Display();
+        LogoAnimation.gameObject.SetActive(true);
+        StartCoroutine(WaitEndAnimation());
         GalleryFilled = false;
     }
 
@@ -35,17 +39,36 @@ public class BogusProfile : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (data.GalleryCards.Count != 0 && !GalleryFilled)
+        //data.TotalCards;
+        if (data.GalleryCards.Count > 3 && !GalleryFilled)
         {
             FillInGallery();
             GalleryFilled = true;
             (LoadingScreen.GetComponent(typeof(LoadingBar)) as LoadingBar).Hide();
         }
+        //if (data.GalleryCards.Count != GalleryScrollView.transform.childCount)
+        //{
+        //    List <GameObject> listTMP = new List<GameObject>(GalleryScrollView.GetComponents<GameObject>());
+        //    foreach (GameObject g in listTMP)
+        //        Destroy(g);
+        //    FillInGallery();
+        //}
     }
 
     void FillInGallery()
     {
         foreach (CardData.Card c in data.GalleryCards)
+        {
+            Text[] TextComponent = cardPrefab.GetComponentsInChildren<Text>();
+            TextComponent[0].text = c.name;
+            TextComponent[1].text = c.life_points.ToString();
+            GameObject g = GameObject.Instantiate(cardPrefab, GalleryScrollView);
+            Card ca = g.GetComponent<Card>();
+            ca.setData(c);
+            Button button = g.GetComponent<Button>();
+            button.onClick.AddListener(() => this.onCardClicked(ca));
+        }
+        foreach (CardData.Card c in data.HandCards)
         {
             Text[] TextComponent = cardPrefab.GetComponentsInChildren<Text>();
             TextComponent[0].text = c.name;
@@ -81,22 +104,10 @@ public class BogusProfile : MonoBehaviour {
         TextComponent[12].text = card.life_points.ToString();
         displayedCard.texture = card.image;
     }
-    void EditDisplayedCard(Card card)
+
+    IEnumerator WaitEndAnimation()
     {
-        //Text[] TextComponent = windowCard.GetComponentsInChildren<Text>();
-        //Button[] ButtonComponent = windowCard.GetComponentsInChildren<Button>();
-        //TextComponent[0].text = card.Fighting_moves.Find(x => x.Type == "jump_height").TypeValue.ToString();
-        //TextComponent[1].text = card.Fighting_moves.Find(x => x.Type == "move_speed").TypeValue.ToString();
-        //TextComponent[2].text = card.Fighting_moves.Find(x => x.Type == "standard_aerial_attack").TypeValue.ToString() + "/" +
-        //                        card.Fighting_moves.Find(x => x.Type == "powerful_aerial_attack").TypeValue.ToString();
-        //TextComponent[3].text = card.Fighting_moves.Find(x => x.Type == "standard_attack").TypeValue.ToString() + "/" +
-        //                        card.Fighting_moves.Find(x => x.Type == "powerful_attack").TypeValue.ToString();
-        //TextComponent[4].text = card.Combo_bar_size.ToString();
-        //TextComponent[5].text = card.Stamina_points.ToString();
-        //TextComponent[7].text = card.Description;
-        //TextComponent[9].text = card.Capacity;
-        //TextComponent[11].text = card.Type;
-        //TextComponent[12].text = card.Life_points.ToString();
-        //displayedCard.texture = card.Image.texture;
+        yield return new WaitForSeconds(10f);
+        LogoAnimation.gameObject.SetActive(false);
     }
 }
