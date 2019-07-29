@@ -7,13 +7,22 @@ public class HealthBar : MonoBehaviour {
 	
     public void SetValue(float NewValue) {
         if (Bar) {
-            if (NewValue < 0f) {
-                NewValue = 0f;
+            if (Bar.transform.localScale.x <= 0f)
+            {
+                if (NewValue < 0f)
+                    NewValue = 0f;
+                Vector2 localScale;
+                localScale.x = -NewValue;
+                Transform bar = Bar.transform;
+                bar.localScale = new Vector3(-NewValue, 1f);
             }
-            Vector2 localScale;
-            localScale.x = NewValue;
-            Transform bar = Bar.transform;
-            bar.localScale = new Vector3(NewValue, 1f);
+            else
+            {
+                Vector2 localScale;
+                localScale.x = NewValue;
+                Transform bar = Bar.transform;
+                bar.localScale = new Vector3(NewValue, 1f);
+            }
         }
     }
 }
