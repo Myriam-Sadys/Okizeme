@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         facingRight = transform.position.x <= Enemy.transform.position.x;
         GetComponent<SpriteRenderer>().flipX = !facingRight;
         if (!PlayerControlled) {
@@ -121,15 +121,15 @@ public class Player : MonoBehaviour
             }
         }
         /*
-         *  l -> Prends des dégâts
-            M -> Ennemi prends des dégâts
-            o -> Gagne des ZP
-            p -> Ennemi gagne des ZP
-            MAJ gauche -> bloque
-            MAJ droit -> Ennemi bloque
-            R -> Reset des attaques
-            k -> Coup de poing
-            i -> Projectile
+         * l -> Prends des dégâts
+M -> Ennemi prends des dégâts
+o -> Gagne des ZP
+p -> Ennemi gagne des ZP
+MAJ gauche -> bloque
+MAJ droit -> Ennemi bloque
+R -> Reset des attaques
+k -> Coup de poing
+i -> Projectile
          */
         if (Input.GetButtonDown("AttackA") && !IsAttacking) {
             // LIGHT ATTACK
@@ -248,7 +248,7 @@ public class Player : MonoBehaviour
         pos.y += 80;
         Debug.Log("PROJECTILE SPAWNED");
         GameObject tmp = (GameObject) Instantiate(projectile, pos, transform.rotation);
-        //tmp.GetComponent<Projectile>().Launch(this);
+        tmp.GetComponent<Projectile>().Launch(this);
         ProjectileLaunched = true;
         GainZemePoints(9);
     }
