@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public float Speed = 1000.0f;
+    public float Speed = 90.0f;
     public float Durability = 1;
     public int Damage = 1;
-    public PlayerMoving Launcher;
+    public Player Launcher;
     public bool facingRight;
     public Rigidbody2D rb;
 
@@ -32,7 +32,7 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    public void Launch(PlayerMoving player)
+    public void Launch(Player player)
     {
         Launcher = player;
         if (Launcher) {
