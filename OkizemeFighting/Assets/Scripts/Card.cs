@@ -21,11 +21,10 @@ public class Card : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Fighting_moves = new List<FightingMoves>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -43,6 +42,7 @@ public class Card : MonoBehaviour {
         Stamina_points = card.stamina_points;
         Combo_bar_size = card.combo_bar_size;
         Assist_call_cost = card.assist_call_cost;
-        Fighting_moves = card.fighting_moves;
+        Fighting_moves = new List<FightingMoves>();
+        Fighting_moves.AddRange(card.fighting_moves);
     }
 }
