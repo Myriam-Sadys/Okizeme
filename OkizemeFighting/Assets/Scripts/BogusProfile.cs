@@ -35,9 +35,6 @@ public class BogusProfile : MonoBehaviour {
     {
         EditDisplayedCard(clickedCard);
         windowCard.SetActive(true);
-        //Text[] TextComponent = windowCard.GetComponentsInChildren<Text>();
-        //Button[] ButtonComponent = windowCard.GetComponentsInChildren<Button>();
-        //EditDisplayedCard(clickedCard);
     }
 
     // Update is called once per frame
@@ -88,7 +85,6 @@ public class BogusProfile : MonoBehaviour {
     void EditDisplayedCard(CardData.Card card)
     {
         Text[] TextComponent = windowCard.GetComponentsInChildren<Text>();
-        //Text[] TextComponent = windowCard.GetComponentsInChildren(Text);
         Button[] ButtonComponent = windowCard.GetComponentsInChildren<Button>();
         ButtonComponent[1].gameObject.GetComponent<SpecialAttackButton>().Hability = card.fighting_moves.Find(x => x.Type == "special_attack_1").Hability;
         ButtonComponent[2].gameObject.GetComponent<SpecialAttackButton>().Hability = card.fighting_moves.Find(x => x.Type == "special_attack_2").Hability;
@@ -112,8 +108,6 @@ public class BogusProfile : MonoBehaviour {
     {
         Button[] ButtonComponent = windowCard.GetComponentsInChildren<Button>();
         Text[] TextComponent = windowCard.GetComponentsInChildren<Text>();
-        //Text[] TextComponent = windowCard.GetComponentsInChildren(Text);
-        //Button[] ButtonComponent = windowCard.GetComponentsInChildren(Button);
         ButtonComponent[1].gameObject.GetComponent<SpecialAttackButton>().Hability = card.Fighting_moves.Find(x => x.Type == "special_attack_1").Hability;
         ButtonComponent[2].gameObject.GetComponent<SpecialAttackButton>().Hability = card.Fighting_moves.Find(x => x.Type == "special_attack_2").Hability;
         ButtonComponent[3].gameObject.GetComponent<SpecialAttackButton>().Hability = card.Fighting_moves.Find(x => x.Type == "special_attack_3").Hability;
