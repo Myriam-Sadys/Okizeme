@@ -115,7 +115,7 @@ public class CardData : MonoBehaviour {
                 if (DeckId != null)
                     StartCoroutine(GetDeck(DeckId, smalldata[i]["name"]));
             }
-            //AddNewDeckButton();
+            AddNewDeckButton();
             //ids.Add(smalldata[i]["_id"]["$oid"]);
         }
     }
