@@ -4766,9 +4766,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartValue: 99
   text: {fileID: 1862914157}
-  player1: {fileID: 0}
-  player2: {fileID: 0}
-  attackElement: {fileID: 0}
 --- !u!114 &1862914157
 MonoBehaviour:
   m_ObjectHideFlags: 0

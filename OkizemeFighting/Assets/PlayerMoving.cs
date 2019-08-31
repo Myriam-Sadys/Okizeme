@@ -19,7 +19,6 @@ public class PlayerMoving : MonoBehaviour
     public PlayerMoving Enemy;
     public HealthBar hb;
     public ZemeBar zb;
-    public bool dontMove;
     public bool ProjectileLaunched = false;
     public Transform firePoint;
     public GameObject bulletPrefab;
@@ -29,18 +28,19 @@ public class PlayerMoving : MonoBehaviour
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        //Enemy = PhotonView.Find(1001).GetComponent<PlayerMoving>();
+        if (!animator)
+        {
+            Debug.LogError("PlayerAnimatorManager is Missing Animator Component", this);
+        }
     }
 
     void Update()
     {
-        if (dontMove)
-            return;
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-        if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump"))
         {
             jump = true;
             animator.SetBool("IsJumping", true);
@@ -157,7 +157,7 @@ public class PlayerMoving : MonoBehaviour
         if (currentPlayerHealth <= 0)
         {
             currentPlayerHealth = 0;
-            PhotonNetwork.Destroy(gameObject);
+            NetworkManagerPUN.Instance.LeaveRoom();
         }
         else
         {
