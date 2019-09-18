@@ -108,6 +108,11 @@ public class PlayerMoving : MonoBehaviour
             pos.y += 0.25f;
             firePoint.transform.position = pos;
         }
+
+        if (Input.GetButtonDown("Guard"))
+        {
+            TakeDamage(350);
+        }
     }
 
     private void ShootSpell()

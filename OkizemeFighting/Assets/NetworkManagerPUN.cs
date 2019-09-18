@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class NetworkManagerPUN : MonoBehaviour
 {
-    public GameObject PlayerPrefab, SpawnPoint1, SpawnPoint2;
+    public GameObject PlayerPrefab, SpawnPoint1, SpawnPoint2, HealthBar1, ZemeBar1, HealthBar2, ZemeBar2;
     public static NetworkManagerPUN Instance;
     void Start()
     {
@@ -37,11 +37,23 @@ public class NetworkManagerPUN : MonoBehaviour
         PhotonNetwork.JoinOrCreateRoom("The Fight", MyRoomOptions, TypedLobby.Default);
     }
 
+    private static List<GameObject> GetObjectsInLayer(GameObject root, int layer)
+    {
+        var ret = new List<GameObject>();
+        foreach (Transform t in root.transform.GetComponentsInChildren(typeof(GameObject), true))
+        {
+            if (t.gameObject.layer == layer)
+            {
+                ret.Add(t.gameObject);
+            }
+        }
+        return ret;
+    }
     // Quand on a effectivement rejoint la room
     void OnJoinedRoom()
     {
         GameObject MyPlayer;
-        GameObject EnemyPlayer;
+        //GameObject EnemyPlayer;
         // On instancie le joueur à tout le réseau
         // Nom du prefab à instancier / Position / Rotation / Groupe
         // Le groupe permet de différencier des joueurs, ou d'autre éléments, que vous vouliez différencier rapidement
@@ -49,19 +61,17 @@ public class NetworkManagerPUN : MonoBehaviour
         if (PhotonNetwork.player.ID == 1)
         {
             MyPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, SpawnPoint1.transform.position, Quaternion.identity, 0);
-
-            MyPlayer.GetComponent<PlayerMoving>().hb = GameObject.Find("/HUD/HealthBar_P1").GetComponent<HealthBar>();
-            MyPlayer.GetComponent<PlayerMoving>().zb = GameObject.Find("/HUD/ZemeBar_P1").GetComponent<ZemeBar>();
-
+            MyPlayer.GetComponent<PlayerMoving>().hb = HealthBar1.GetComponent<HealthBar>();
+            MyPlayer.GetComponent<PlayerMoving>().zb = ZemeBar1.GetComponent<ZemeBar>();
         }
         else
         {
             MyPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, SpawnPoint2.transform.position, Quaternion.identity, 0);
-            MyPlayer.GetComponent<PlayerMoving>().hb = GameObject.Find("/HUD/HealthBar_P2").GetComponent<HealthBar>();
-            MyPlayer.GetComponent<PlayerMoving>().zb = GameObject.Find("/HUD/ZemeBar_P2").GetComponent<ZemeBar>();
-            MyPlayer.GetComponent<PlayerMoving>().Enemy = PhotonView.FindObjectOfType<PlayerMoving>();
-            PhotonView.FindObjectOfType<PlayerMoving>().Enemy = MyPlayer.GetComponent<PlayerMoving>().Enemy;
-            Debug.Log(MyPlayer.GetComponent<PlayerMoving>().Enemy);
+            MyPlayer.GetComponent<PlayerMoving>().hb = HealthBar2.GetComponent<HealthBar>();
+            MyPlayer.GetComponent<PlayerMoving>().zb = ZemeBar2.GetComponent<ZemeBar>();
+            //MyPlayer.GetComponent<PlayerMoving>().Enemy = PhotonView.FindObjectOfType<PlayerMoving>();
+            //PhotonView.FindObjectOfType<PlayerMoving>().Enemy = MyPlayer.GetComponent<PlayerMoving>().Enemy;
+            //Debug.Log(MyPlayer.GetComponent<PlayerMoving>().Enemy);
         }
         // Le contrôle et la caméra sont désactivé afin d'être activé UNIQUEMENT pour le joueur en local
         // Et surtout pas contrôlé par les autres joueurs sur le réseau
