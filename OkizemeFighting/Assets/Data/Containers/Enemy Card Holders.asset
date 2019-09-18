@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02b98cca4e93c842b28f993c700f6c5, type: 3}
+  m_Name: Enemy Card Holders
+  m_EditorClassIdentifier: 
+  handGrid: {fileID: 11400000, guid: f4762bc2c981d954586c74b18ea9ddbc, type: 2}
+  resourcesGrid: {fileID: 11400000, guid: 1fc6e27bf8759d440970d8a4ebc6d5cf, type: 2}
+  downGrid: {fileID: 11400000, guid: 81de7e7f9aee99341b40b8e0dba7b884, type: 2}
+  battleLine: {fileID: 11400000, guid: f281dded66cdfc545bc8f79dadd9f35d, type: 2}

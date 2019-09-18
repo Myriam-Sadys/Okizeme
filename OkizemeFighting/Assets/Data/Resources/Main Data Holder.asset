@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899fda2cc87dcb74f9c777046ee3f49f, type: 3}
+  m_Name: Main Data Holder
+  m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 7799433047592258149, guid: c6b6d7589a78251409abd1aacdf8e912,
+    type: 3}
+  cardDownLogic: {fileID: 11400000, guid: ccd3fb8b2aef5ea4b9968dc59c47b83e, type: 2}
+  handCard: {fileID: 11400000, guid: f5d230e2776077749b2e9c8e03f5664e, type: 2}
+  attackElement: {fileID: 11400000, guid: 77b3c1637928693409a20a6b4f9f7214, type: 2}
+  defenceElement: {fileID: 11400000, guid: 21fed715d0fbf0c429faa28a0691d68b, type: 2}

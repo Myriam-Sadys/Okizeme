@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d52ad742ecfab949a77383da7397849, type: 3}
+  m_Name: The Moore
+  m_EditorClassIdentifier: 
+  cardType: {fileID: 11400000, guid: 9276aaed74358944997fe220c21939b3, type: 2}
+  cost: 0
+  properties:
+  - strinValue: Ressource
+    intValue: 0
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: 3c8cc20befcbd7f4c939e1bb2bc34533, type: 2}
+  - strinValue: 
+    intValue: 0
+    sprite: {fileID: 21300000, guid: 906621a3404addd46a15857652f550de, type: 3}
+    element: {fileID: 11400000, guid: eb2420eef903cc142b8dd8475fce5e52, type: 2}
+  - strinValue: Une ressource
+    intValue: 0
+    sprite: {fileID: 0}
+    element: {fileID: 11400000, guid: b5d9da444a05e4444bc583a761ea1121, type: 2}
