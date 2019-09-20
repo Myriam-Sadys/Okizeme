@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NetworkManagerPUN : MonoBehaviour
 {
     public GameObject PlayerPrefab, SpawnPoint1, SpawnPoint2, HealthBar1, ZemeBar1, HealthBar2, ZemeBar2;
     public static NetworkManagerPUN Instance;
+    public SA.Timer t; 
     void Start()
     {
         // On se connect directement au cloud de PUN, si vous avez sélectionné auto join dans la configuration
@@ -61,21 +59,24 @@ public class NetworkManagerPUN : MonoBehaviour
         if (PhotonNetwork.player.ID == 1)
         {
             MyPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, SpawnPoint1.transform.position, Quaternion.identity, 0);
-            MyPlayer.GetComponent<PlayerMoving>().hb = HealthBar1.GetComponent<HealthBar>();
-            MyPlayer.GetComponent<PlayerMoving>().zb = ZemeBar1.GetComponent<ZemeBar>();
+            MyPlayer.GetComponent<PlayerManager>().hb = HealthBar1.GetComponent<HealthBar>();
+            MyPlayer.GetComponent<PlayerManager>().zb = ZemeBar1.GetComponent<ZemeBar>();
+            Debug.Log("hey");
+
         }
         else
         {
             MyPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, SpawnPoint2.transform.position, Quaternion.identity, 0);
-            MyPlayer.GetComponent<PlayerMoving>().hb = HealthBar2.GetComponent<HealthBar>();
-            MyPlayer.GetComponent<PlayerMoving>().zb = ZemeBar2.GetComponent<ZemeBar>();
+            MyPlayer.GetComponent<PlayerManager>().hb = HealthBar2.GetComponent<HealthBar>();
+            MyPlayer.GetComponent<PlayerManager>().zb = ZemeBar2.GetComponent<ZemeBar>();
+            t.LaunchTimer();
             //MyPlayer.GetComponent<PlayerMoving>().Enemy = PhotonView.FindObjectOfType<PlayerMoving>();
             //PhotonView.FindObjectOfType<PlayerMoving>().Enemy = MyPlayer.GetComponent<PlayerMoving>().Enemy;
             //Debug.Log(MyPlayer.GetComponent<PlayerMoving>().Enemy);
         }
         // Le contrôle et la caméra sont désactivé afin d'être activé UNIQUEMENT pour le joueur en local
         // Et surtout pas contrôlé par les autres joueurs sur le réseau
-        MyPlayer.GetComponent<PlayerMoving>().enabled = true;
+        MyPlayer.GetComponent<PlayerManager>().enabled = true;
         //MyPlayer.GetComponentInChildren<Camera>().enabled = true;
         //MyPlayer.GetComponentInChildren<Camera>().GetComponent<AudioListener>().enabled = true;
     }

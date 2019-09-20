@@ -18,7 +18,7 @@ public class BulletScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        PlayerMoving enemy = hitInfo.GetComponent<PlayerMoving>();
+        PlayerManager enemy = hitInfo.GetComponent<PlayerManager>();
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
@@ -27,7 +27,10 @@ public class BulletScript : MonoBehaviour
 
         shot = PhotonNetwork.Instantiate(impactEffect.name, transform.position, transform.rotation, 0);
 
-        PhotonNetwork.Destroy(gameObject);
+        if (PhotonNetwork.player.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
         //Destroy(shot);
     }
 

@@ -8,50 +8,62 @@ namespace SA
 {
     public class Timer : MonoBehaviour
     {
-        public float StartValue = 99.0f;
+        public float StartValue = 60.0f;
         private float Value;
         public Text text;
+        public NbOfPlayers nb;
         //public PlayerMoving player1;
         //public PlayerMoving player2;
         //public Element attackElement;
+        bool startTimer = false;
+        double timerIncrementValue;
+        double startTime;
+        [SerializeField] double timer = 0;
+        ExitGames.Client.Photon.Hashtable CustomeValue;
 
-
-        void Start()
+        public void LaunchTimer()
         {
-            Debug.Log("Fight");
-            Value = StartValue;
+            if (PhotonNetwork.player.IsMasterClient)
+            {
+                Debug.Log("1");
+                CustomeValue = new ExitGames.Client.Photon.Hashtable();
+                startTime = PhotonNetwork.time;
+                startTimer = true;
+                CustomeValue.Add("StartTime", startTime);
+                PhotonNetwork.room.SetCustomProperties(CustomeValue);
+            }
+            else
+            {
+                Debug.Log("2");
+                startTime = double.Parse(PhotonNetwork.room.CustomProperties["StartTime"].ToString());
+                startTimer = true;
+            }
         }
 
         void Update()
         {
-            //if (player1 && player2)
+            //if (Value > 0.1)
             //{
-                if (/*player1.IsAlive() && player2.IsAlive() &&*/ Value > 0.1)
-                {
-                    Value -= Time.deltaTime;
-                    text.text = Value.ToString("0");
-                }
-                else
-                {
-                    if (Value <= 0.1)
-                    {
-                        Fight.IsFight = false;
-                    }
-                    //else if (Player1.IsAlive())
-                    //{
-                    //    StaticClass.Blocker.CardInstanceToGraveyard();
-                    //    StaticClass.Ennemy.DoDamage(StaticClass.AttackValue);
-                    //}
-                    //else
-                    //{ 
-                    //    StaticClass.Attacker.CardInstanceToGraveyard();
-                    //    StaticClass.Player.DoDamage(StaticClass.AttackValue);
-                    //}
-                    Fight.IsFight = false;
-                    //SceneManager.SetActiveScene(SceneManager.GetSceneByName("Test"));
-                    //SceneManager.UnloadScene("MainScene2");
-                }
+            //    Value -= Time.deltaTime;
+            //    text.text = Value.ToString("0");
             //}
+            //else
+            //{
+            //    Fight.IsFight = false;
+            //}
+            if (!startTimer) return;
+            timerIncrementValue = startTime - PhotonNetwork.time + 60;
+            if (timerIncrementValue > 0.1)
+            {
+                text.text = timerIncrementValue.ToString("0");
+            }
+            else
+            {
+                Fight.IsFight = false;
+                Debug.Log("End");
+                //Timer Completed
+                //Do What Ever You What to Do Here
+            }
         }
     }
 }
