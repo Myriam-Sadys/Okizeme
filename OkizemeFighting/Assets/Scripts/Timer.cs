@@ -15,55 +15,60 @@ namespace SA
         //public PlayerMoving player1;
         //public PlayerMoving player2;
         //public Element attackElement;
-        bool startTimer = false;
-        double timerIncrementValue;
-        double startTime;
-        [SerializeField] double timer = 0;
-        ExitGames.Client.Photon.Hashtable CustomeValue;
+        //bool startTimer = false;
+        //double timerIncrementValue;
+        //double startTime;
+        //[SerializeField] double timer = 0;
+        //ExitGames.Client.Photon.Hashtable CustomeValue;
+
+        private void Start()
+        {
+            Value = StartValue;
+        }
 
         public void LaunchTimer()
         {
-            if (PhotonNetwork.player.IsMasterClient)
-            {
-                Debug.Log("1");
-                CustomeValue = new ExitGames.Client.Photon.Hashtable();
-                startTime = PhotonNetwork.time;
-                startTimer = true;
-                CustomeValue.Add("StartTime", startTime);
-                PhotonNetwork.room.SetCustomProperties(CustomeValue);
-            }
-            else
-            {
-                Debug.Log("2");
-                startTime = double.Parse(PhotonNetwork.room.CustomProperties["StartTime"].ToString());
-                startTimer = true;
-            }
-        }
-
-        void Update()
-        {
-            //if (Value > 0.1)
+            //if (PhotonNetwork.player.IsMasterClient)
             //{
-            //    Value -= Time.deltaTime;
-            //    text.text = Value.ToString("0");
+            //    Debug.Log("1");
+            //    CustomeValue = new ExitGames.Client.Photon.Hashtable();
+            //    startTime = PhotonNetwork.time;
+            //    startTimer = true;
+            //    CustomeValue.Add("StartTime", startTime);
+            //    PhotonNetwork.room.SetCustomProperties(CustomeValue);
             //}
             //else
             //{
-            //    Fight.IsFight = false;
-            //}
-            if (!startTimer) return;
-            timerIncrementValue = startTime - PhotonNetwork.time + 60;
-            if (timerIncrementValue > 0.1)
+            //    Debug.Log("2");
+            //    //startTime = double.Parse(PhotonNetwork.room.CustomProperties["StartTime"].ToString());
+            //    startTimer = true;
+
+        }
+
+        private void Update()
+        {
+            if (Value > 0.1)
             {
-                text.text = timerIncrementValue.ToString("0");
+                Value -= Time.deltaTime;
+                text.text = Value.ToString("0");
             }
             else
             {
                 Fight.IsFight = false;
-                Debug.Log("End");
-                //Timer Completed
-                //Do What Ever You What to Do Here
             }
+            //if (!startTimer) return;
+            //timerIncrementValue = startTime - PhotonNetwork.time + 60;
+            //if (timerIncrementValue > 0.1)
+            //{
+            //    text.text = timerIncrementValue.ToString("0");
+            //}
+            //else
+            //{
+            //    Fight.IsFight = false;
+            //    Debug.Log("End");
+            //    //Timer Completed
+            //    //Do What Ever You What to Do Here
+            //}
         }
     }
 }

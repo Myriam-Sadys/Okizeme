@@ -4702,10 +4702,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d0b4df47fa51f48b9ba04f858d38f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartValue: 99
+  StartValue: 60
   text: {fileID: 1862914157}
   nb: {fileID: 1862914161}
-  timer: 20
 --- !u!114 &1862914157
 MonoBehaviour:
   m_ObjectHideFlags: 0
