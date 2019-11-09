@@ -54,7 +54,7 @@ namespace SA
             }
             else
             {
-                Fight.IsFight = false;
+                Debug.Log("End");
             }
             //if (!startTimer) return;
             //timerIncrementValue = startTime - PhotonNetwork.time + 60;

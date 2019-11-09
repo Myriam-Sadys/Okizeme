@@ -25,4 +25,20 @@ public class HealthBar : MonoBehaviour {
             }
         }
     }
+
+    public float GetValue() {
+        float value_bar = 0f;
+        if (Bar)
+        {
+            if (Bar.transform.localScale.x <= 0f)
+            {
+                value_bar = -Bar.transform.localScale.x * 1000;
+            }
+            else
+            {
+                value_bar = Bar.transform.localScale.x * 1000;
+            }
+        }
+        return value_bar;
+    }
 }

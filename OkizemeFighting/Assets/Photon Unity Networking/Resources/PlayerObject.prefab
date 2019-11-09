@@ -271,17 +271,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 3347178919623745487}
-  PlayerHealth: 1000
   ZemePoints: 0
-  facingRight: 1
+  Health: 1000
   runSpeed: 20
+  PlayerUiPrefab: {fileID: 3415084225082819011, guid: 1585c7388fa67c54c9f050c6b651cf51,
+    type: 3}
   Enemy: {fileID: 0}
   hb: {fileID: 0}
   zb: {fileID: 0}
-  ProjectileLaunched: 0
   firePoint: {fileID: 3347178920528150939}
-  bulletPrefab: {fileID: 3529678420891393964, guid: 50aa9f16185639f4fb05c203b2b6d0b1,
+  spellPrefab: {fileID: 3529678420891393964, guid: 50aa9f16185639f4fb05c203b2b6d0b1,
     type: 3}
+  ProjectileLaunched: 0
 --- !u!114 &818031534868158969
 MonoBehaviour:
   m_ObjectHideFlags: 0

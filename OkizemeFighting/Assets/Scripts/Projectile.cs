@@ -36,7 +36,7 @@ public class Projectile : MonoBehaviour {
     {
         Launcher = player;
         if (Launcher) {
-            facingRight = Launcher.facingRight;
+            //facingRight = Launcher.facingRight;
             /*rb.velocity = transform.forward * Speed;
             if (!facingRight) {
                 rb.velocity *= (-1);
