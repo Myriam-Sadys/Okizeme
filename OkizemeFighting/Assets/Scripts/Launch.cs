@@ -31,27 +31,31 @@ public class Launch : Photon.PunBehaviour {
 	[Tooltip("The maximum number of players per room")]
 	public byte maxPlayersPerRoom = 2;
 
-	#endregion
+    [Tooltip("The number of seconds before starting the game")]
+    public float timeLeft = 3.0f;
 
-	#region Private Variables
-	/// <summary>
-	/// Keep track of the current process. Since connection is asynchronous and is based on several callbacks from Photon, 
-	/// we need to keep track of this to properly adjust the behavior when we receive call back by Photon.
-	/// Typically this is used for the OnConnectedToMaster() callback.
-	/// </summary>
-	bool isConnecting;
+    [Tooltip("The UI Loader Anime")]
+    public LoaderAnime loaderAnime;
+
+    #endregion
+
+    #region Private Variables
+    /// <summary>
+    /// Keep track of the current process. Since connection is asynchronous and is based on several callbacks from Photon, 
+    /// we need to keep track of this to properly adjust the behavior when we receive call back by Photon.
+    /// Typically this is used for the OnConnectedToMaster() callback.
+    /// </summary>
+    bool isConnecting;
 
 	/// <summary>
 	/// This client's version number. Users are separated from each other by gameversion (which allows you to make breaking changes).
 	/// </summary>
 	string _gameVersion = "1";
-    public float timeLeft = 3.0f;
-    public bool stop = true;
 
+    private bool stop = true;
     private float minutes;
     private float seconds;
 
-    public Text text;
 
 
     #endregion
@@ -71,32 +75,8 @@ public class Launch : Photon.PunBehaviour {
 		// this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
 		PhotonNetwork.automaticallySyncScene = true;
 
-        //// we want to make sure the log is clear everytime we connect, we might have several failed attempted if connection failed.
-        //feedbackText.text = "";
-
-        //// keep track of the will to join a room, because when we come back from the game we will get a callback that we are connected, so we need to know what to do then
-        //isConnecting = true;
-
-        //// hide the Play button for visual consistency
-        //controlPanel.SetActive(false);
-
-
-        //// we check if we are connected or not, we join if we are , else we initiate the connection to the server.
-        //if (PhotonNetwork.connected)
-        //{
-        //    LogFeedback("Joining Room...");
-        //    // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnPhotonRandomJoinFailed() and we'll create one.
-        //    PhotonNetwork.JoinRandomRoom();
-        //}
-        //else
-        //{
-
-        //    LogFeedback("Connecting...");
-
-        //    // #Critical, we must first and foremost connect to Photon Online Server.
-        //    PhotonNetwork.ConnectUsingSettings(_gameVersion);
-        //}
     }
+
     void Update()
     {
         if (stop) return;
@@ -135,9 +115,14 @@ public class Launch : Photon.PunBehaviour {
 		// hide the Play button for visual consistency
 		controlPanel.transform.GetChild(0).gameObject.SetActive(false);
 
+        // start the loader animation for visual effect.
+        if (loaderAnime != null)
+        {
+            loaderAnime.StartLoaderAnimation();
+        }
 
-		// we check if we are connected or not, we join if we are , else we initiate the connection to the server.
-		if (PhotonNetwork.connected)
+        // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
+        if (PhotonNetwork.connected)
 		{
 			LogFeedback("Joining Room...");
 			// #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnPhotonRandomJoinFailed() and we'll create one.
@@ -224,8 +209,10 @@ public class Launch : Photon.PunBehaviour {
 		LogFeedback("<Color=Red>OnDisconnectedFromPhoton</Color>");
 		Debug.LogError("Animator/Launcher:Disconnected");
 
+        // #Critical: we failed to connect or got disconnected. There is not much we can do. Typically, a UI system should be in place to let the user attemp to connect again.
+        loaderAnime.StopLoaderAnimation();
 
-		isConnecting = false;
+        isConnecting = false;
         controlPanel.transform.GetChild(0).gameObject.SetActive(false);
 
     }
@@ -247,21 +234,21 @@ public class Launch : Photon.PunBehaviour {
 		Debug.Log("Animator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.automaticallySyncScene to sync our instance scene.
+        //if (PhotonNetwork.room.PlayerCount == 1)
+        //{
+        //    Debug.Log("We load the 'Room for 1' ");
+
+        //    // #Critical
+        //    // Load the Room Level. 
+        //    PhotonNetwork.LoadLevel("MainScene2");
+
+        //}
         if (PhotonNetwork.room.PlayerCount == 2)
         {
             PhotonView PV = PhotonView.Get(this);
             PV.RPC("JoinRoom", PhotonTargets.All);
         }
-  //      if (PhotonNetwork.room.PlayerCount == 1)
-		//{
-		//	Debug.Log("We load the 'MainScene2' ");
-
-		//	// #Critical
-		//	// Load the Room Level. 
-		//	PhotonNetwork.LoadLevel("MainScene2");
-
-		//}
-	}
+    }
 
     [PunRPC]
     private void JoinRoom()
@@ -279,7 +266,8 @@ public class Launch : Photon.PunBehaviour {
             feedbackText.text = string.Format("{0:0}", seconds);
             yield return new WaitForSeconds(0.2f);
         }
-        PhotonNetwork.LoadLevel("MainScene2");
+        if (PhotonNetwork.isMasterClient)
+            PhotonNetwork.LoadLevel("MainScene2");
     }
 
     #endregion

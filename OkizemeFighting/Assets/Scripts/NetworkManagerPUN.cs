@@ -54,7 +54,10 @@ public class NetworkManagerPUN : Photon.PunBehaviour
                 Debug.Log("We are Instantiating LocalPlayer from " + SceneManagerHelper.ActiveSceneName);
 
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                MyPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                if (PhotonNetwork.isMasterClient)
+                    MyPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPoint1.transform.position, Quaternion.identity, 0);
+                else
+                    MyPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPoint2.transform.position, Quaternion.identity, 0);
                 MyPlayer.GetComponent<PlayerManager>().enabled = true;
             }
             else

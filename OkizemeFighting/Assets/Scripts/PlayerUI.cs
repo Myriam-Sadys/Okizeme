@@ -19,8 +19,6 @@ public class PlayerUI : MonoBehaviour
 
     #region Public Properties
 
-    [Tooltip("Pixel offset from the player target")]
-    public Vector3 ScreenOffset = new Vector3(0f, 30f, 0f);
 
     [Tooltip("UI Text to display Player's Name")]
     public Text PlayerNameText;
@@ -67,7 +65,8 @@ public class PlayerUI : MonoBehaviour
         // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
         if (_target == null)
         {
-            Destroy(this.gameObject);
+            Debug.Log("DESTROYED FRRERRRE");
+            //Destroy(this.gameObject);
             return;
         }
 
@@ -91,15 +90,15 @@ public class PlayerUI : MonoBehaviour
     void LateUpdate()
     {
 
-        // Do not show the UI if we are not visible to the camera, thus avoid potential bugs with seeing the UI, but not the player itself.
+        //Do not show the UI if we are not visible to the camera, thus avoid potential bugs with seeing the UI, but not the player itself.
         //if (_targetRenderer != null)
         //{
         //    Debug.Log("ah bah tu m'étonnes");
         //    this.gameObject.SetActive(_targetRenderer.isVisible);
         //}
 
-        // #Critical
-        // Follow the Target GameObject on screen.
+        //# Critical
+        //        Follow the Target GameObject on screen.
         //if (_targetTransform != null)
         //{
         //    _targetPosition = _targetTransform.position;
@@ -135,7 +134,6 @@ public class PlayerUI : MonoBehaviour
         _targetTransform = _target.GetComponent<Transform>();
         _targetRenderer = _target.GetComponent<Renderer>();
 
-
         CharacterController _characterController = _target.GetComponent<CharacterController>();
 
         // Get data from the Player that won't change during the lifetime of this Component
@@ -147,6 +145,21 @@ public class PlayerUI : MonoBehaviour
         if (PlayerNameText != null)
         {
             PlayerNameText.text = PlayerNameText + " " + _target.photonView.owner.NickName;
+        }
+
+
+        if (_targetTransform != null)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                Debug.Log("Changing side of UI");
+                for (int i = 0; i < this.transform.childCount; i++)
+                {
+                    _targetPosition = this.transform.GetChild(i).gameObject.transform.position;
+                    _targetPosition.x = -this.transform.GetChild(i).gameObject.transform.position.x;
+                    this.transform.GetChild(i).gameObject.transform.position = _targetPosition;
+                }
+            }
         }
     }
 

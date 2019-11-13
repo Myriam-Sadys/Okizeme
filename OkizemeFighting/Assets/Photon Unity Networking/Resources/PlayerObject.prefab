@@ -277,8 +277,6 @@ MonoBehaviour:
   PlayerUiPrefab: {fileID: 3415084225082819011, guid: 1585c7388fa67c54c9f050c6b651cf51,
     type: 3}
   Enemy: {fileID: 0}
-  hb: {fileID: 0}
-  zb: {fileID: 0}
   firePoint: {fileID: 3347178920528150939}
   spellPrefab: {fileID: 3529678420891393964, guid: 50aa9f16185639f4fb05c203b2b6d0b1,
     type: 3}
@@ -329,7 +327,7 @@ MonoBehaviour:
     TeleportIfDistanceGreaterThan: 3
     InterpolateOption: 4
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 5
+    InterpolateLerpSpeed: 10
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:

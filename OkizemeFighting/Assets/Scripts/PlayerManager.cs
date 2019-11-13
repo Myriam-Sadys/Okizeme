@@ -58,7 +58,7 @@ public class PlayerManager : Photon.PunBehaviour, IPunObservable
         }
 
         // #Important
-        // used in GameManager.cs: we keep track of the localPlayer instance to prevent instanciation when levels are synchronized
+        // used in NetworkManagerPUN.cs: we keep track of the localPlayer instance to prevent instanciation when levels are synchronized
         if (photonView.isMine)
         {
             LocalPlayerInstance = gameObject;
@@ -84,11 +84,13 @@ public class PlayerManager : Photon.PunBehaviour, IPunObservable
             zb = PlayerUiPrefab.gameObject.transform.GetChild(2).gameObject.GetComponent<ZemeBar>();
             GameObject _uiGo = Instantiate(this.PlayerUiPrefab) as GameObject;
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+            Debug.Log("<Color=Yellow><a>INSTANTIATING UI</a></Color>Setting UI to player");
         }
         else
         {
             Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
         }
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Update()
@@ -178,9 +180,27 @@ public class PlayerManager : Photon.PunBehaviour, IPunObservable
         }
     }
 
+    void CalledOnLevelWasLoaded(int level)
+    {
+        // check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
+        if (!Physics.Raycast(transform.position, -Vector3.up, 5f))
+        {
+            transform.position = new Vector3(0f, 5f, 0f);
+        }
+
+        GameObject _uiGo = Instantiate(this.PlayerUiPrefab) as GameObject;
+        _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+    }
+
     #endregion
 
     #region Private Methods
+
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
+    {
+
+        this.CalledOnLevelWasLoaded(scene.buildIndex);
+    }
 
     private void ShootSpell()
     {
