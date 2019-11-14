@@ -902,13 +902,13 @@ AnimatorStateMachine:
     m_Position: {x: 790, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102901705768992954}
-    m_Position: {x: 708, y: 336, z: 0}
+    m_Position: {x: 710, y: 330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102420477013391660}
-    m_Position: {x: 984, y: 348, z: 0}
+    m_Position: {x: 980, y: 350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102019753660627476}
-    m_Position: {x: 457.29266, y: 332.14636, z: 0}
+    m_Position: {x: 460, y: 330, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions:

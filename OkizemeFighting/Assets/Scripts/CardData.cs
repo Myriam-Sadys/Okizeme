@@ -84,7 +84,6 @@ public class CardData : MonoBehaviour {
         set { totalCards = value; }
     }
 
-
     void Start()
     {
         TotalCards = 0;
@@ -104,11 +103,14 @@ public class CardData : MonoBehaviour {
     public IEnumerator GetCardsFromAPI()
     {
         UnityWebRequest www = UnityWebRequest.Get(APIurl + "accounts/" + Token + "/decks");
+        UnityWebRequest wwwCards = UnityWebRequest.Get(APIurl + "cards_info");
         yield return www.SendWebRequest();
         if (!string.IsNullOrEmpty(www.downloadHandler.text))
         {
             var data = JSON.Parse(www.downloadHandler.text);
             var smalldata = data["data"];
+            Debug.LogError("smalldata values : " + smalldata);
+
             for (int i = 0; i != smalldata.Count; i++)
             {
                 string DeckId = smalldata[i]["_id"]["$oid"];
@@ -116,6 +118,23 @@ public class CardData : MonoBehaviour {
                     StartCoroutine(GetDeck(DeckId, smalldata[i]["name"]));
             }
             AddNewDeckButton();
+            //ids.Add(smalldata[i]["_id"]["$oid"]);
+        }
+
+        yield return wwwCards.SendWebRequest();
+        if (!string.IsNullOrEmpty(wwwCards.downloadHandler.text))
+        {
+            var data = JSON.Parse(wwwCards.downloadHandler.text);
+            var smalldata = data["data"];
+            Debug.LogError("smalldata values : " + smalldata);
+
+            for (int i = 0; i != smalldata.Count; i++)
+            {
+                string CardId = smalldata[i]["_id"]["$oid"];
+                if (CardId != null)
+                    StartCoroutine(CreateNewCard(UnityWebRequest.Get(APIurl + "cards_info/" + CardId), null, false));
+            }
+            //AddNewDeckButton();
             //ids.Add(smalldata[i]["_id"]["$oid"]);
         }
     }
@@ -153,7 +172,7 @@ public class CardData : MonoBehaviour {
         {
             string tmp = APIurl + "cards_info/" + ids[i];
             UnityWebRequest wwwCardID = UnityWebRequest.Get(APIurl + "cards_info/" + ids[i]);
-            StartCoroutine(CreateNewCard(wwwCardID, deck.Cards));
+            StartCoroutine(CreateNewCard(wwwCardID, deck.Cards, true));
         }
         Decks.Add(deck);
     }
@@ -166,7 +185,7 @@ public class CardData : MonoBehaviour {
         g.GetComponent<Button>().onClick.AddListener(() => this.OnDeckClick(deck.Cards));
     }
 
-    IEnumerator CreateNewCard(UnityWebRequest www, List<CardData.Card> DeckCards)
+    IEnumerator CreateNewCard(UnityWebRequest www, List<CardData.Card> DeckCards, bool inDeck)
     {
         yield return www.SendWebRequest();
         var cardData = JSON.Parse(www.downloadHandler.text);
@@ -190,8 +209,10 @@ public class CardData : MonoBehaviour {
         yield return wwwImage.SendWebRequest();
         c.image = GetImage(wwwImage.downloadHandler.text);
 
-        DeckCards.Add(c);
-        GalleryCards.Add(c);
+        if (inDeck)
+            DeckCards.Add(c);
+        else
+            GalleryCards.Add(c);
     }
 
     Texture2D GetImage(string www)
@@ -244,4 +265,5 @@ public class CardData : MonoBehaviour {
         DeckSelect.gameObject.SetActive(false);
         UpdateHand = true;
     }
+    
 }

@@ -10,7 +10,7 @@ public class ScrollScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         startPos = transform.position;
-        startPos += new Vector2(-600, 300);
+        //startPos += new Vector2(-600, 300);
     }
 
     // Update is called once per frame

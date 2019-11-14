@@ -29,6 +29,7 @@ namespace SA
         public CardHolders otherPlayersHolder;
         public State currentState;
         public GameObject cardPrefab;
+        PlayerData PlayerInformations;
 
         public int turnIndex;
         public Turn[] turns;
@@ -79,6 +80,7 @@ namespace SA
 
         private void Awake()
         {
+            PlayerInformations = GameObject.Find("PlayerInformations").GetComponent<PlayerData>();
             singleton = this;
             all_players = new PlayerHolder[turns.Length];
             for (int i = 0; i < turns.Length; i++)
@@ -93,6 +95,7 @@ namespace SA
         void Start()
         {
             Settings.gameManager = this;
+            playerOneHolder.name = PlayerInformations.name;
 
             SetupPlayers();
             

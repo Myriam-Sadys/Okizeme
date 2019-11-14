@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c02b98cca4e93c842b28f993c700f6c5, type: 3}
-  m_Name: Player Card Holders
+  m_Name: PlayerInformations
   m_EditorClassIdentifier: 
   handGrid: {fileID: 11400000, guid: e637bd26794ba5748a04f51858237f70, type: 2}
   resourcesGrid: {fileID: 11400000, guid: 3c8fe7614ee265845a125ece183c7bd8, type: 2}
   downGrid: {fileID: 11400000, guid: 79e7b96e98ff12a4aafb025bc834b7c0, type: 2}
   battleLine: {fileID: 11400000, guid: 4d0d0e0955a93764aa7d8be25571e1d7, type: 2}
+  playerHolder: {fileID: 11400000, guid: 13903024b3c29624f8213f04f17f06fd, type: 2}
