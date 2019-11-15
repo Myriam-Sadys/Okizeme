@@ -84,6 +84,7 @@ public class CardData : MonoBehaviour {
         set { totalCards = value; }
     }
 
+
     void Start()
     {
         TotalCards = 0;
@@ -109,8 +110,6 @@ public class CardData : MonoBehaviour {
         {
             var data = JSON.Parse(www.downloadHandler.text);
             var smalldata = data["data"];
-            Debug.LogError("smalldata values : " + smalldata);
-
             for (int i = 0; i != smalldata.Count; i++)
             {
                 string DeckId = smalldata[i]["_id"]["$oid"];
@@ -132,9 +131,9 @@ public class CardData : MonoBehaviour {
             {
                 string CardId = smalldata[i]["_id"]["$oid"];
                 if (CardId != null)
-                    StartCoroutine(CreateNewCard(UnityWebRequest.Get(APIurl + "cards_info/" + CardId), null, false));
+                    StartCoroutine(CreateNewCard(UnityWebRequest.Get(APIurl + "cards_info/" + CardId), null));
             }
-            //AddNewDeckButton();
+            AddNewDeckButton();
             //ids.Add(smalldata[i]["_id"]["$oid"]);
         }
     }
@@ -172,7 +171,7 @@ public class CardData : MonoBehaviour {
         {
             string tmp = APIurl + "cards_info/" + ids[i];
             UnityWebRequest wwwCardID = UnityWebRequest.Get(APIurl + "cards_info/" + ids[i]);
-            StartCoroutine(CreateNewCard(wwwCardID, deck.Cards, true));
+            StartCoroutine(CreateNewCard(wwwCardID, deck.Cards));
         }
         Decks.Add(deck);
     }
@@ -185,7 +184,7 @@ public class CardData : MonoBehaviour {
         g.GetComponent<Button>().onClick.AddListener(() => this.OnDeckClick(deck.Cards));
     }
 
-    IEnumerator CreateNewCard(UnityWebRequest www, List<CardData.Card> DeckCards, bool inDeck)
+    IEnumerator CreateNewCard(UnityWebRequest www, List<CardData.Card> DeckCards)
     {
         yield return www.SendWebRequest();
         var cardData = JSON.Parse(www.downloadHandler.text);
@@ -209,7 +208,7 @@ public class CardData : MonoBehaviour {
         yield return wwwImage.SendWebRequest();
         c.image = GetImage(wwwImage.downloadHandler.text);
 
-        if (inDeck)
+        if (DeckCards != null)
             DeckCards.Add(c);
         else
             GalleryCards.Add(c);
@@ -265,5 +264,4 @@ public class CardData : MonoBehaviour {
         DeckSelect.gameObject.SetActive(false);
         UpdateHand = true;
     }
-    
 }

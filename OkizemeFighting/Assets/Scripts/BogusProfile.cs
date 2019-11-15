@@ -33,8 +33,8 @@ public class BogusProfile : MonoBehaviour {
 
     void onCardClicked(Card clickedCard)
     {
-        //EditDisplayedCard(clickedCard);
         EditCardDetails(clickedCard);
+        //EditDisplayedCard(clickedCard);
         //windowCard.SetActive(true);
     }
 
@@ -80,8 +80,8 @@ public class BogusProfile : MonoBehaviour {
             Button button = g.GetComponent<Button>();
             button.onClick.AddListener(() => this.onCardClicked(ca));
         }
-        //EditDisplayedCard(data.GalleryCards[0]);
         EditCardDetails(data.GalleryCards[0]);
+        //EditDisplayedCard(data.GalleryCards[0]);
     }
 
     void EditDisplayedCard(CardData.Card card)

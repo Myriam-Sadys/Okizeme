@@ -1276,6 +1276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e2634bda40b3f40973fb4f17c2dbba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SceneToLoad: Menu
+  email: titi@test.fr
 --- !u!1 &1923926479
 GameObject:
   m_ObjectHideFlags: 0
