@@ -27,6 +27,9 @@ namespace ExitGames.Demos.DemoAnimator
         [Tooltip("The Beams GameObject to control")]
         public GameObject Beams;
 
+        [Tooltip("The current ZemePoints of our player")]
+        public float ZemePoints = 0f;
+
         [Tooltip("The current Health of our player")]
         public float Health = 1f;
 
@@ -75,19 +78,6 @@ namespace ExitGames.Demos.DemoAnimator
         /// </summary>
         public void Start()
         {
-            CameraWork _cameraWork = gameObject.GetComponent<CameraWork>();
-
-            if (_cameraWork != null)
-            {
-                if (photonView.isMine)
-                {
-                    _cameraWork.OnStartFollowing();
-                }
-            }
-            else
-            {
-                Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
-            }
 
             // Create the UI
             if (this.PlayerUiPrefab != null)
@@ -211,7 +201,7 @@ namespace ExitGames.Demos.DemoAnimator
             {
                 transform.position = new Vector3(0f, 5f, 0f);
             }
-
+            Debug.Log("INSTANTIATE OUR UIIIIIIIIIII YEAAAAA");
             GameObject _uiGo = Instantiate(this.PlayerUiPrefab) as GameObject;
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
@@ -224,8 +214,9 @@ namespace ExitGames.Demos.DemoAnimator
 		#if UNITY_5_4_OR_NEWER
 		void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
 		{
-			
-			this.CalledOnLevelWasLoaded(scene.buildIndex);
+            Debug.Log("OnSceneLoaded: " + scene.name);
+            Debug.Log(loadingMode);
+            this.CalledOnLevelWasLoaded(scene.buildIndex);
 		}
 		#endif
 

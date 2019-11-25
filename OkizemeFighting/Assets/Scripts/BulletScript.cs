@@ -2,36 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletScript : MonoBehaviour
+namespace Okizeme.Fight
 {
-
-    public float speed = 20f;
-    public int damage = 40;
-    public Rigidbody2D rb;
-    public GameObject impactEffect;
-
-    // Use this for initialization
-    void Start()
+    public class BulletScript : MonoBehaviour
     {
-        rb.velocity = transform.right * speed;
-    }
 
-    void OnTriggerEnter2D(Collider2D hitInfo)
-    {
-        PlayerManager enemy = hitInfo.GetComponent<PlayerManager>();
-        if (enemy != null)
+        public float speed = 20f;
+        public int damage = 40;
+        public Rigidbody2D rb;
+        public GameObject impactEffect;
+
+        // Use this for initialization
+        void Start()
         {
-            enemy.TakeDamage(damage);
+            rb.velocity = transform.right * speed;
         }
-        GameObject shot;
 
-        shot = PhotonNetwork.Instantiate(impactEffect.name, transform.position, transform.rotation, 0);
-
-        if (PhotonNetwork.player.IsMasterClient)
+        void OnTriggerEnter2D(Collider2D hitInfo)
         {
-            PhotonNetwork.Destroy(gameObject);
-        }
-        //Destroy(shot);
-    }
+            PlayerManager enemy = hitInfo.GetComponent<PlayerManager>();
+            if (enemy != null)
+            {
+                //enemy.TakeDamage(damage);
+            }
+            GameObject shot;
 
+            shot = PhotonNetwork.Instantiate(impactEffect.name, transform.position, transform.rotation, 0);
+
+            if (PhotonNetwork.player.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+            //Destroy(shot);
+        }
+
+    }
 }

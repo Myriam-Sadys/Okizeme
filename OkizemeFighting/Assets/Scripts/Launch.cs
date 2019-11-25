@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿    // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Launcher.cs" company="Exit Games GmbH">
 //   Part of: Photon Unity Networking Demos
 // </copyright>
@@ -30,6 +30,12 @@ public class Launch : Photon.PunBehaviour {
 
 	[Tooltip("The maximum number of players per room")]
 	public byte maxPlayersPerRoom = 2;
+
+	[Tooltip("The name of the first player")]
+	public string NamePlayer1 = "Merwan";
+
+	[Tooltip("The name of the second player")]
+	public string NamePlayer2 = "Seb";
 
     [Tooltip("The number of seconds before starting the game")]
     public float timeLeft = 3.0f;
@@ -243,6 +249,12 @@ public class Launch : Photon.PunBehaviour {
         //    PhotonNetwork.LoadLevel("MainScene2");
 
         //}
+        if (PhotonNetwork.isMasterClient)
+            PhotonNetwork.playerName = NamePlayer1;
+        else
+            PhotonNetwork.playerName = NamePlayer2;
+        PlayerPrefs.SetString("PlayerName", PhotonNetwork.playerName);
+        Debug.Log(PhotonNetwork.playerName);
         if (PhotonNetwork.room.PlayerCount == 2)
         {
             PhotonView PV = PhotonView.Get(this);

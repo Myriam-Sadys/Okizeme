@@ -36,29 +36,34 @@ namespace ExitGames.Demos.DemoAnimator
 		[Tooltip("The UI Loader Anime")]
 		public LoaderAnime loaderAnime;
 
-		#endregion
+        [Tooltip("The number of seconds before starting the game")]
+        public float timeLeft = 3.0f;
 
-		#region Private Variables
-		/// <summary>
-		/// Keep track of the current process. Since connection is asynchronous and is based on several callbacks from Photon, 
-		/// we need to keep track of this to properly adjust the behavior when we receive call back by Photon.
-		/// Typically this is used for the OnConnectedToMaster() callback.
-		/// </summary>
-		bool isConnecting;
+        #endregion
+
+        #region Private Variables
+        /// <summary>
+        /// Keep track of the current process. Since connection is asynchronous and is based on several callbacks from Photon, 
+        /// we need to keep track of this to properly adjust the behavior when we receive call back by Photon.
+        /// Typically this is used for the OnConnectedToMaster() callback.
+        /// </summary>
+        bool isConnecting;
 
 		/// <summary>
 		/// This client's version number. Users are separated from each other by gameversion (which allows you to make breaking changes).
 		/// </summary>
 		string _gameVersion = "1";
+        private bool stop = true;
+        private float minutes;
+        private float seconds;
+        #endregion
 
-		#endregion
+        #region MonoBehaviour CallBacks
 
-		#region MonoBehaviour CallBacks
-
-		/// <summary>
-		/// MonoBehaviour method called on GameObject by Unity during early initialization phase.
-		/// </summary>
-		void Awake()
+        /// <summary>
+        /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
+        /// </summary>
+        void Awake()
 		{
 			if (loaderAnime==null)
 			{
@@ -76,17 +81,32 @@ namespace ExitGames.Demos.DemoAnimator
 
 		}
 
-		#endregion
+        void Update()
+        {
+            if (stop) return;
+            timeLeft -= Time.deltaTime;
+
+            minutes = Mathf.Floor(timeLeft / 60);
+            seconds = timeLeft % 60;
+            if (seconds > 59) seconds = 59;
+            if (minutes < 0)
+            {
+                stop = true;
+                minutes = 0;
+                seconds = 0;
+            }
+        }
+        #endregion
 
 
-		#region Public Methods
+        #region Public Methods
 
-		/// <summary>
-		/// Start the connection process. 
-		/// - If already connected, we attempt joining a random room
-		/// - if not yet connected, Connect this application instance to Photon Cloud Network
-		/// </summary>
-		public void Connect()
+        /// <summary>
+        /// Start the connection process. 
+        /// - If already connected, we attempt joining a random room
+        /// - if not yet connected, Connect this application instance to Photon Cloud Network
+        /// </summary>
+        public void Connect()
 		{
 			// we want to make sure the log is clear everytime we connect, we might have several failed attempted if connection failed.
 			feedbackText.text = "";
@@ -199,35 +219,60 @@ namespace ExitGames.Demos.DemoAnimator
 
 		}
 
-		/// <summary>
-		/// Called when entering a room (by creating or joining it). Called on all clients (including the Master Client).
-		/// </summary>
-		/// <remarks>
-		/// This method is commonly used to instantiate player characters.
-		/// If a match has to be started "actively", you can call an [PunRPC](@ref PhotonView.RPC) triggered by a user's button-press or a timer.
-		///
-		/// When this is called, you can usually already access the existing players in the room via PhotonNetwork.playerList.
-		/// Also, all custom properties should be already available as Room.customProperties. Check Room..PlayerCount to find out if
-		/// enough players are in the room to start playing.
-		/// </remarks>
-		public override void OnJoinedRoom()
-		{
-			LogFeedback("<Color=Green>OnJoinedRoom</Color> with "+PhotonNetwork.room.PlayerCount+" Player(s)");
-			Debug.Log("DemoAnimator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
-		
-			// #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.automaticallySyncScene to sync our instance scene.
-			if (PhotonNetwork.room.PlayerCount == 1)
-			{
-				Debug.Log("We load the 'Room for 1' ");
+        /// <summary>
+        /// Called when entering a room (by creating or joining it). Called on all clients (including the Master Client).
+        /// </summary>
+        /// <remarks>
+        /// This method is commonly used to instantiate player characters.
+        /// If a match has to be started "actively", you can call an [PunRPC](@ref PhotonView.RPC) triggered by a user's button-press or a timer.
+        ///
+        /// When this is called, you can usually already access the existing players in the room via PhotonNetwork.playerList.
+        /// Also, all custom properties should be already available as Room.customProperties. Check Room..PlayerCount to find out if
+        /// enough players are in the room to start playing.
+        /// </remarks>
+        public override void OnJoinedRoom()
+        {
+            LogFeedback("<Color=Green>OnJoinedRoom</Color> with " + PhotonNetwork.room.PlayerCount + " Player(s)");
+            Debug.Log("DemoAnimator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
-				// #Critical
-				// Load the Room Level. 
-				PhotonNetwork.LoadLevel("PunBasics-Room for 1");
+            // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.automaticallySyncScene to sync our instance scene.
+                //if (PhotonNetwork.room.PlayerCount == 1)
+                //{
+                //    Debug.Log("We load the 'Room for 1' ");
 
-			}
-		}
+                //    // #Critical
+                //    // Load the Room Level. 
+                //    PhotonNetwork.LoadLevel("PunBasics-Room for 1");
+                //}
+            if (PhotonNetwork.room.PlayerCount == 2)
+            {
+                Debug.Log("hey");
+                PhotonView PV = PhotonView.Get(this);
+                PV.RPC("JoinRoom", PhotonTargets.All);
+            }
+        }
 
-		#endregion
-		
-	}
+    [PunRPC]
+        private void JoinRoom()
+        {
+            stop = false;
+            timeLeft = 3f;
+            Update();
+            StartCoroutine(updateCoroutine());
+        }
+
+        private IEnumerator updateCoroutine()
+        {
+            while (!stop)
+            {
+                feedbackText.text = string.Format("{0:0}", seconds);
+                yield return new WaitForSeconds(0.2f);
+            }
+            if (PhotonNetwork.isMasterClient)
+                PhotonNetwork.LoadLevel("PunBasics-Room for 2");
+        }
+
+        #endregion
+
+    }
 }
