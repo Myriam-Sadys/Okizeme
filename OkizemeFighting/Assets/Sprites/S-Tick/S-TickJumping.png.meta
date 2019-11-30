@@ -1,14 +1,24 @@
 fileFormatVersion: 2
 guid: 0f90fd48d8459784cbbc34e082eaeb6b
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: S-TickJumping_0
-    21300002: S-TickJumping_1
-    21300004: S-TickJumping_2
-    21300006: S-TickJumping_3
-    21300008: S-TickJumping_4
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: S-TickJumping_0
+  - first:
+      213: 21300002
+    second: S-TickJumping_1
+  - first:
+      213: 21300004
+    second: S-TickJumping_2
+  - first:
+      213: 21300006
+    second: S-TickJumping_3
+  - first:
+      213: 21300008
+    second: S-TickJumping_4
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -104,6 +114,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d68852c473862964daef8757412c4a00
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -124,6 +135,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 2c9c23c6184cab942a757e525b702340
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -144,6 +156,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6784e4a7fbc39e44ead62e152de3ec60
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -164,6 +177,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e9e8952bcda41524aad226d652d91bd2
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -184,6 +198,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6357cb34d8f9e774aa782055e47cde3c
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -192,10 +207,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: dad4240859db6eb47a738b633941704b
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -1,12 +1,18 @@
 fileFormatVersion: 2
 guid: 9aa927cf0bd8b8a4397aa2f43b909989
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: S-TickBlocking_0
-    21300002: S-TickBlocking_1
-    21300004: S-TickBlocking_2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: S-TickBlocking_0
+  - first:
+      213: 21300002
+    second: S-TickBlocking_1
+  - first:
+      213: 21300004
+    second: S-TickBlocking_2
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -102,6 +108,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7cd33fc326545f248b73cd59c9234577
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -122,6 +129,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 28644231e5468154db6b301b62df4c71
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -142,6 +150,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 202468799f18122489a45f569e82c554
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -150,10 +159,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 68c7a0e82c332734e9c1ec7b6eafd447
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

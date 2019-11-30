@@ -1,12 +1,18 @@
 fileFormatVersion: 2
 guid: 831dbcf60b19da540b33e494b58004a8
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: S-TickMoveBack_0
-    21300002: S-TickMoveBack_1
-    21300004: S-TickMoveBack_2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: S-TickMoveBack_0
+  - first:
+      213: 21300002
+    second: S-TickMoveBack_1
+  - first:
+      213: 21300004
+    second: S-TickMoveBack_2
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -102,6 +108,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7b4a644d489732d4baf2b8c225b81a82
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -122,6 +129,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a5ff4f82c39a93249bbb470c4d2fda6d
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -142,6 +150,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0e0318c481585db40bb1b458b790a790
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -150,10 +159,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: be82d1a4b43691d42bc1636a6e9480cc
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

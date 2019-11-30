@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: cdece08f16c44354196c3b5a345b18c3
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: KenCrouching_0
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: KenCrouching_0
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -100,6 +102,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fb69a63d77be4b7459674fb2712dd39b
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -108,10 +111,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: f8bc2ddde17dadf468f385871ddcabca
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

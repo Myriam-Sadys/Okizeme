@@ -1,15 +1,27 @@
 fileFormatVersion: 2
 guid: 6f9d507c7daf8be45a123fcc9b5cebb8
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: S-TickIdle_0
-    21300002: S-TickIdle_1
-    21300004: S-TickIdle_2
-    21300006: S-TickIdle_3
-    21300008: S-TickIdle_4
-    21300010: S-TickIdle_5
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: S-TickIdle_0
+  - first:
+      213: 21300002
+    second: S-TickIdle_1
+  - first:
+      213: 21300004
+    second: S-TickIdle_2
+  - first:
+      213: 21300006
+    second: S-TickIdle_3
+  - first:
+      213: 21300008
+    second: S-TickIdle_4
+  - first:
+      213: 21300010
+    second: S-TickIdle_5
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -105,6 +117,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5d1abb7c4c3235c4db190219fc7ff323
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -125,6 +138,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: eae92c12af369924395e562335b1b23b
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -145,6 +159,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d5b7b66011b3753469dba8111f55200d
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -165,6 +180,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fc544d9ef40b5a44fa9eb2d99fb8ea27
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -185,6 +201,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 05e870d2aabfc734ca656e6a5de9be72
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -205,6 +222,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 187ed4341fbab5243b1d7851ab0709c8
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -213,10 +231,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 337c4ae1a724eb645a6bebd99bf9959c
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

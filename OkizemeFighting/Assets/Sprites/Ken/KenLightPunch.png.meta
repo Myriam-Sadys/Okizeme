@@ -1,12 +1,18 @@
 fileFormatVersion: 2
 guid: 7f945edc3b04ba04eb2caf58a1eb4176
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: KenLightPunch_0
-    21300002: KenLightPunch_1
-    21300004: KenLightPunch_2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: KenLightPunch_0
+  - first:
+      213: 21300002
+    second: KenLightPunch_1
+  - first:
+      213: 21300004
+    second: KenLightPunch_2
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -102,6 +108,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4ee587d1243dda34ea1f8e2fcf587791
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -122,6 +129,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 618f7d6b156cfa247af5e3e5f1c79edb
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -142,6 +150,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c343a3c9f1bdb7d459b9baa28c3ad1e5
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -150,10 +159,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: b7a6393f313fe194e97180607d84853b
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
