@@ -20,6 +20,8 @@ namespace Okizeme.Fight
 
         #region Public Properties
 
+        [Tooltip("Pixel offset from the player target")]
+        public Vector3 ScreenOffset = new Vector3(0f, 30f, 0f);
 
         [Tooltip("UI Text to display Player's Name")]
         public Text PlayerNameText;
@@ -65,7 +67,7 @@ namespace Okizeme.Fight
             // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
             if (_target == null)
             {
-                //Debug.Log("DESTROYED FRRERRRE");
+                Debug.Log("DESTROYED");
                 Destroy(this.gameObject);
                 return;
             }
@@ -98,13 +100,13 @@ namespace Okizeme.Fight
             //}
 
             //# Critical
-            //        Follow the Target GameObject on screen.
+            //            Follow the Target GameObject on screen.
             //if (_targetTransform != null)
             //{
             //    _targetPosition = _targetTransform.position;
             //    _targetPosition.y += _characterControllerHeight;
 
-            //    this.transform.position = Camera.main.WorldToScreenPoint(_targetPosition) + ScreenOffset;
+            //    this.transform.position = new Vector3(0,0,0);
             //}
 
         }
@@ -134,13 +136,9 @@ namespace Okizeme.Fight
             _targetTransform = _target.GetComponent<Transform>();
             _targetRenderer = _target.GetComponent<Renderer>();
 
-            CharacterController _characterController = _target.GetComponent<CharacterController>();
+            Vector3 _characterPosition = _target.transform.position;
 
             // Get data from the Player that won't change during the lifetime of this Component
-            if (_characterController != null)
-            {
-                _characterControllerHeight = _characterController.height;
-            }
 
             if (PlayerNameText != null)
             {
@@ -150,16 +148,20 @@ namespace Okizeme.Fight
 
             if (_targetTransform != null)
             {
-                if (!PhotonNetwork.isMasterClient)
+                if (_characterPosition.x < 0)
                 {
-                    Debug.Log("Changing side of UI");
+                    Debug.Log("Instantiating our UI if we are master I guess");
                     for (int i = 0; i < this.transform.childCount; i++)
                     {
                         _targetPosition = this.transform.GetChild(i).gameObject.transform.position;
-                        _targetPosition.x = -this.transform.GetChild(i).gameObject.transform.position.x;
+                        _targetPosition.x = this.transform.GetChild(i).gameObject.transform.position.x * -1;
                         this.transform.GetChild(i).gameObject.transform.position = _targetPosition;
+                        for (int j = 0; j < this.transform.GetChild(i).childCount; j++)
+                        {
+                            if (this.transform.GetChild(i).gameObject.transform.GetChild(j).gameObject.tag == "Bar")
+                                this.transform.GetChild(i).gameObject.transform.GetChild(j).gameObject.GetComponent<Image>().fillOrigin = (int)Image.OriginHorizontal.Right;
+                        }
                     }
-
                 }
             }
         }

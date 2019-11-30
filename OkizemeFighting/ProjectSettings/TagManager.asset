@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Fire
   - Message
+  - Timer
+  - Bar
+  - Health
   layers:
   - Default
   - TransparentFX

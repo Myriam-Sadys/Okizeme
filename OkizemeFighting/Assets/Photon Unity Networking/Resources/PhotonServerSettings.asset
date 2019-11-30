@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppID: 2eab97d6-3b79-430e-8f55-bc5eb8b0264a
   VoiceAppID: 
-  ChatAppID: 
+  ChatAppID: 2eab97d6-3b79-430e-8f55-bc5eb8b0264a
   HostType: 1
   PreferredRegion: 0
   EnabledRegions: -1
@@ -44,4 +44,12 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - DealsDamage
+  - GainZeme
+  - ShootFireball
+  - DestroyBullet
+  - Impact
+  - Destroy
+  - Shoot
+  - LeaveRoom
   DisableAutoOpenWizard: 1

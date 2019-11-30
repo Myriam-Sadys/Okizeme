@@ -240,22 +240,13 @@ public class Launch : Photon.PunBehaviour {
 		Debug.Log("Animator/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
         // #Critical: We only load if we are the first player, else we rely on  PhotonNetwork.automaticallySyncScene to sync our instance scene.
-        //if (PhotonNetwork.room.PlayerCount == 1)
-        //{
-        //    Debug.Log("We load the 'Room for 1' ");
-
-        //    // #Critical
-        //    // Load the Room Level. 
-        //    PhotonNetwork.LoadLevel("MainScene2");
-
-        //}
         if (PhotonNetwork.isMasterClient)
             PhotonNetwork.playerName = NamePlayer1;
         else
             PhotonNetwork.playerName = NamePlayer2;
         PlayerPrefs.SetString("PlayerName", PhotonNetwork.playerName);
         Debug.Log(PhotonNetwork.playerName);
-        if (PhotonNetwork.room.PlayerCount == 2)
+        if (PhotonNetwork.room.PlayerCount == maxPlayersPerRoom)
         {
             PhotonView PV = PhotonView.Get(this);
             PV.RPC("JoinRoom", PhotonTargets.All);

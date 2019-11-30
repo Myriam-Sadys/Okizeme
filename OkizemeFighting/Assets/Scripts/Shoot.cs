@@ -3,22 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shoot : MonoBehaviour
+namespace Okizeme.Fight
 {
-    public Transform firePoint;
-    public GameObject bulletPrefab;
-
-
-    void Update()
+    public class Shoot : MonoBehaviour
     {
-        if (Input.GetButtonDown("AttackB"))
+        public Transform firePoint;
+        public GameObject bulletPrefab;
+
+
+        void Update()
         {
-            ShootSpell();
+            if (Input.GetButtonDown("AttackB"))
+            {
+                ShootSpell();
+            }
         }
-    }
 
-    private void ShootSpell()
-    {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        private void ShootSpell()
+        {
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        }
     }
 }

@@ -30,13 +30,12 @@ namespace Okizeme.Fight
             {
                 transform.position -= transform.right * Time.deltaTime * Speed;
             }
-            //if (IsColliding(Launcher.Enemy.GetComponent<BoxCollider2D>()))
-            //{
-            //    Launcher.Enemy.TakeDamage(Damage);
-            //    Launcher.GainZemePoints(6);
-            //    Launcher.ProjectileLaunched = false;
-            //    Destroy(gameObject);
-            //}
+            if (IsColliding(Launcher.GetComponent<BoxCollider2D>()))
+            {
+                Launcher.GainZemePoints(6);
+                Launcher.ProjectileLaunched = false;
+                Destroy(gameObject);
+            }
         }
 
         public void Launch(PlayerManager player)

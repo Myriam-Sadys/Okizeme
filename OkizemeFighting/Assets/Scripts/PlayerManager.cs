@@ -17,11 +17,15 @@ namespace Okizeme.Fight
     {
         #region Public Variables
 
+        [Tooltip("The controller of movement of our caracter")]
+        public CharacterController2D controller;
+
         [Tooltip("The Player's UI GameObject Prefab")]
         public GameObject PlayerUiPrefab;
 
         [Tooltip("The current ZemePoints of our player")]
         public float ZemePoints = 0f;
+        private float DamageReceived;
 
         [Tooltip("The current Health of our player")]
         public float Health = 1f;
@@ -29,16 +33,38 @@ namespace Okizeme.Fight
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
 
+        [Tooltip("Speed at which the player will move")]
+        public float runSpeed = 40f;
+
+        public Transform firePoint;
+        public GameObject spellPrefab;
+        public bool ProjectileLaunched;
         #endregion
 
         #region Private Variables
 
         //True, when the user is firing
-        bool IsFiring;
+        private HealthBar hb;
+        private ZemeBar zb;
+        private Animator animator;
+        float horizontalMove = 0f;
+        bool punch = false;
+        bool jump = false;
+        bool crouch = false;
+        bool block = false;
+        private bool touchingPlayer;
+        private GameObject timer;
+        private float timeRemaining;
+        private readonly int DamagePerHit = 150;
+        private readonly int DamagePerSpell = 250;
+        private readonly int ZemePerDamageDone = 15;
+        private readonly int ZemePerDamageReceived = 10;
+        private readonly int ZemeCostSpell = 33;
 
         #endregion
 
         #region MonoBehaviour CallBacks
+
 
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
@@ -63,12 +89,12 @@ namespace Okizeme.Fight
         /// </summary>
         public void Start()
         {
-
-
+            animator = gameObject.GetComponent<Animator>();
             // Create the UI
             if (this.PlayerUiPrefab != null)
             {
                 GameObject _uiGo = Instantiate(this.PlayerUiPrefab) as GameObject;
+                Debug.Log("heh heh");
                 _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
             }
             else
@@ -103,60 +129,22 @@ namespace Okizeme.Fight
             if (photonView.isMine)
             {
                 this.ProcessInputs();
+                horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+                animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+
 
                 if (this.Health <= 0f)
                 {
                     NetworkManagerPUN.Instance.LeaveRoom();
                 }
+
             }
         }
 
-        /// <summary>
-        /// MonoBehaviour method called when the Collider 'other' enters the trigger.
-        /// Affect Health of the Player if the collider is a beam
-        /// Note: when jumping and firing at the same, you'll find that the player's own beam intersects with itself
-        /// One could move the collider further away to prevent this or check if the beam belongs to the player.
-        /// </summary>
-        public void OnTriggerEnter(Collider other)
+        void FixedUpdate()
         {
-            if (!photonView.isMine)
-            {
-                return;
-            }
-
-
-            // We are only interested in Beamers
-            // we should be using tags but for the sake of distribution, let's simply check by name.
-            if (!other.name.Contains("Beam"))
-            {
-                return;
-            }
-
-            this.Health -= 0.1f;
-        }
-
-        /// <summary>
-        /// MonoBehaviour method called once per frame for every Collider 'other' that is touching the trigger.
-        /// We're going to affect health while the beams are interesting the player
-        /// </summary>
-        /// <param name="other">Other.</param>
-        public void OnTriggerStay(Collider other)
-        {
-            // we dont' do anything if we are not the local player.
-            if (!photonView.isMine)
-            {
-                return;
-            }
-
-            // We are only interested in Beamers
-            // we should be using tags but for the sake of distribution, let's simply check by name.
-            if (!other.name.Contains("Beam"))
-            {
-                return;
-            }
-
-            // we slowly affect health when beam is constantly hitting us, so player has to move to prevent death.
-            this.Health -= 0.1f * Time.deltaTime;
+            controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+            jump = false;
         }
 
         /// <summary>
@@ -196,73 +184,148 @@ namespace Okizeme.Fight
         /// </summary>
         void ProcessInputs()
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Jump"))
             {
-                // we don't want to fire when we interact with UI buttons for example. IsPointerOverGameObject really means IsPointerOver*UI*GameObject
-                // notice we don't use on on GetbuttonUp() few lines down, because one can mouse down, move over a UI element and release, which would lead to not lower the isFiring Flag.
-                if (EventSystem.current.IsPointerOverGameObject())
-                {
-                    //	return;
-                }
-
-                if (!this.IsFiring)
-                {
-                    this.IsFiring = true;
-                }
+                jump = true;
+                animator.SetBool("IsJumping", true);
             }
 
-            if (Input.GetButtonUp("Fire1"))
+            if (Input.GetButtonDown("AttackA"))
             {
-                if (this.IsFiring)
+                animator.SetTrigger("AttackA");
+                RaycastHit2D hit;
+                Debug.DrawLine(firePoint.transform.position, transform.position + transform.right * 100, Color.red, 2.5f);
+                hit = Physics2D.Raycast(firePoint.position, transform.position + transform.right * 100, Mathf.Infinity);
+                if (hit.collider.name == "PlayerObject(Clone)" && hit.distance == 0)
                 {
-                    this.IsFiring = false;
+                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+                    hit.transform.GetComponent<PlayerManager>().SendMessage("DamageEnemy", DamagePerHit);
+                    PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, ZemePerDamageDone);
                 }
+                else
+                    Debug.Log("Missed Player ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+                punch = true;
+            }
+            else if (Input.GetButtonUp("AttackA"))
+            {
+                animator.ResetTrigger("AttackA");
+                punch = false;
+            }
+
+            if (Input.GetButtonDown("AttackB") && ProjectileLaunched == false)
+            {
+                if (ZemePoints >= ZemeCostSpell)
+                {
+                    PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, -ZemeCostSpell);
+                    animator.SetTrigger("AttackB");
+                    GameObject clone = PhotonNetwork.Instantiate(spellPrefab.name, firePoint.transform.position, firePoint.transform.rotation, 0);
+                    ProjectileLaunched = true;
+                }
+            }
+            else if (Input.GetButtonUp("AttackB"))
+            {
+                animator.ResetTrigger("AttackB");
+                ProjectileLaunched = false;
+            }
+
+            if (Input.GetButtonDown("Guard"))
+            {
+                animator.SetBool("IsBlocking", true);
+                block = true;
+            }
+            else if (Input.GetButtonUp("Guard"))
+            {
+                animator.SetBool("IsBlocking", false);
+                block = false;
+            }
+
+            if (Input.GetButtonDown("Crouch"))
+            {
+                crouch = true;
+                var pos = firePoint.transform.position;
+                pos.y -= 0.25f;
+                firePoint.transform.position = pos;
+            }
+            else if (Input.GetButtonUp("Crouch"))
+            {
+                crouch = false;
+                var pos = firePoint.transform.position;
+                pos.y += 0.25f;
+                firePoint.transform.position = pos;
             }
         }
 
-        #endregion
-
-        /*
-        #region IPunObservable implementation
-
-        void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+        private void DamageEnemy(float dmg)
         {
-            if (stream.isWriting)
+            PhotonView.Get(this).RPC("DealsDamage", PhotonTargets.All, dmg);
+        }
+
+        [PunRPC]
+        private void DealsDamage(float Damages)
+        {
+            if (block)
             {
-                // We own this player: send the others our data
-                stream.SendNext(IsFiring);
-                stream.SendNext(Health);
+                Damages /= 2;
+                Debug.Log("Damage were blocked");
             }
-            else
+            this.Health -= Damages;
+            GainZemePoints(ZemePerDamageReceived);
+            Debug.Log("WORKED : took " + Damages + " damages and gained " + ZemePerDamageReceived + " ZEME");
+        }
+
+        [PunRPC]
+        private void GainZeme(int value)
+        {
+            ZemePoints += value;
+            if (ZemePoints < 0)
             {
-                // Network player, receive data
-                this.IsFiring = (bool)stream.ReceiveNext();
-                this.Health = (float)stream.ReceiveNext();
+                ZemePoints = 0;
+            }
+            if (ZemePoints > 100)
+            {
+                ZemePoints = 100;
+            }
+            if (zb)
+            {
+                zb.SetValue((float)ZemePoints / 100.0f);
             }
         }
 
-        #endregion
-        */
+        public void OnCrouching(bool isCrouching)
+        {
+            animator.SetBool("IsCrouching", crouch);
+        }
 
-        #region IPunObservable implementation
+        public void OnLanding()
+        {
+            if (animator != null)
+                animator.SetBool("IsJumping", false);
+        }
+
+        public void GainZemePoints(int value)
+        {
+            ZemePoints += value;
+            if (ZemePoints < 0)
+            {
+                ZemePoints = 0;
+            }
+            if (ZemePoints > 100)
+            {
+                ZemePoints = 100;
+            }
+            if (zb)
+            {
+                zb.SetValue((float)ZemePoints / 100.0f);
+            }
+        }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            if (stream.isWriting)
-            {
-                // We own this player: send the others our data
-                stream.SendNext(this.IsFiring);
-                stream.SendNext(this.Health);
-            }
-            else
-            {
-                // Network player, receive data
-                this.IsFiring = (bool)stream.ReceiveNext();
-                this.Health = (float)stream.ReceiveNext();
-            }
+
         }
 
         #endregion
+
     }
 }
 
