@@ -121,7 +121,7 @@ namespace Okizeme.Fight
         /// </summary>
         public override void OnLeftRoom()
         {
-            SceneManager.LoadScene("GameOver");
+            SceneManager.LoadScene("YouLost");
         }
 
         #endregion
