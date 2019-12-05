@@ -76,9 +76,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene2.unity
     guid: 32ae4bb70f8aa2249a3d790b9d7550da
   - enabled: 1
-    path: Assets/Scenes/YouLost.unity
-    guid: f96f7d66812652645965a67ea01ab881
-  - enabled: 1
     path: Assets/Scenes/YouWon.unity
     guid: a6e46a0afbe797a4b810cb86047148aa
+  - enabled: 1
+    path: Assets/Scenes/YouLost.unity
+    guid: f96f7d66812652645965a67ea01ab881
   m_configObjects: {}
