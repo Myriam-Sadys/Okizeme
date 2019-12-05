@@ -23,9 +23,17 @@ public class LoadingBar : MonoBehaviour {
         Background = this.transform.Find("Image").GetComponent<Image>();
         Hide();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void Awake()
+    {
+        FullLoadingBar = this.transform.Find("FullBar").GetComponent<Image>();
+        EmptyLoadingBar = this.transform.Find("EmptyBar").GetComponent<Image>();
+        Background = this.transform.Find("Image").GetComponent<Image>();
+        Hide();
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (StartLoading)
         {
             if (FullLoadingBar.fillAmount == 1.0f)

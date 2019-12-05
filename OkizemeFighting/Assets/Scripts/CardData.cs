@@ -104,6 +104,7 @@ public class CardData : MonoBehaviour {
     public IEnumerator GetCardsFromAPI()
     {
         UnityWebRequest www = UnityWebRequest.Get(APIurl + "accounts/" + Token + "/decks");
+        UnityWebRequest wwwCards = UnityWebRequest.Get(APIurl + "cards_info");
         yield return www.SendWebRequest();
         if (!string.IsNullOrEmpty(www.downloadHandler.text))
         {
@@ -115,7 +116,24 @@ public class CardData : MonoBehaviour {
                 if (DeckId != null)
                     StartCoroutine(GetDeck(DeckId, smalldata[i]["name"]));
             }
-            //AddNewDeckButton();
+            AddNewDeckButton();
+            //ids.Add(smalldata[i]["_id"]["$oid"]);
+        }
+
+        yield return wwwCards.SendWebRequest();
+        if (!string.IsNullOrEmpty(wwwCards.downloadHandler.text))
+        {
+            var data = JSON.Parse(wwwCards.downloadHandler.text);
+            var smalldata = data["data"];
+            Debug.LogError("smalldata values : " + smalldata);
+
+            for (int i = 0; i != smalldata.Count; i++)
+            {
+                string CardId = smalldata[i]["_id"]["$oid"];
+                if (CardId != null)
+                    StartCoroutine(CreateNewCard(UnityWebRequest.Get(APIurl + "cards_info/" + CardId), null));
+            }
+            AddNewDeckButton();
             //ids.Add(smalldata[i]["_id"]["$oid"]);
         }
     }
@@ -157,7 +175,7 @@ public class CardData : MonoBehaviour {
         }
         Decks.Add(deck);
     }
-    
+
     void AddNewDeckButton()
     {
         GameObject g = GameObject.Instantiate(DeckPrefab, DeckScrollView);
@@ -174,7 +192,7 @@ public class CardData : MonoBehaviour {
         Card c = new Card();
 
         // TODO : make a better random part
-        c.id = IdCardValues["_id"]["$oid"] + Random.Range(0f,1000f).ToString();
+        c.id = IdCardValues["_id"]["$oid"] + Random.Range(0f, 1000f).ToString();
         c.name = IdCardValues["name"];
         c.description = IdCardValues["description"];
         c.type = IdCardValues["type"];
@@ -190,8 +208,10 @@ public class CardData : MonoBehaviour {
         yield return wwwImage.SendWebRequest();
         c.image = GetImage(wwwImage.downloadHandler.text);
 
-        DeckCards.Add(c);
-        GalleryCards.Add(c);
+        if (DeckCards != null)
+            DeckCards.Add(c);
+        else
+            GalleryCards.Add(c);
     }
 
     Texture2D GetImage(string www)

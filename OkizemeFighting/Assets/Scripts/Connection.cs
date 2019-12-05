@@ -7,34 +7,84 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class Connection : MonoBehaviour {
+public class Connection : MonoBehaviour
+{
 
     public Canvas Menu;
     public Canvas ConnectionWindow;
     public Canvas LoadingScreen;
     public Image Warning;
     public GameObject CreateAccountWindow;
+    [SerializeField]
+    private InputField Email;
+    [SerializeField]
+    private InputField Pass;
 
     private string APIurl;
     private int ConnectionTry;
     private bool CreateAccount;
     private bool Connect;
+    private bool SetInfos;
     private string ConfirmPassword;
     private string UserName;
     private string UserAdress;
     private string Password;
     private string Token;
 
-    void Start () {
+    void Start()
+    {
         APIurl = "http://api.okizeme.dahobul.com/";
         ConnectionTry = 0;
         CreateAccount = false;
-        UserName = "";
+        UserName = GameInstanceManager.m_gim.m_userName;
+        UserAdress = GameInstanceManager.m_gim.m_email;
         ConfirmPassword = "";
-        Token = "";
+        if (GameInstanceManager.m_gim.m_password != "")
+            Password = GameInstanceManager.m_gim.m_password;
+        Token = GameInstanceManager.m_gim.m_token;
+        Debug.Log("Token: " + Token);
+        if (Token != "" && Password != "")
+        {
+            Connect = true;
+            // Login();
+        }
+        else
+        {
+            Connect = false;
+            if (UserAdress != "")
+                SetInfos = true;
+            Menu.gameObject.SetActive(false);
+        }
     }
-	
-	void Update () {
+
+    public void Awake()
+    {
+        APIurl = "http://api.okizeme.dahobul.com/";
+        ConnectionTry = 0;
+        CreateAccount = false;
+        UserName = GameInstanceManager.m_gim.m_userName;
+        UserAdress = GameInstanceManager.m_gim.m_email;
+        ConfirmPassword = "";
+        if (GameInstanceManager.m_gim.m_password != "")
+            Password = GameInstanceManager.m_gim.m_password;
+        Token = GameInstanceManager.m_gim.m_token;
+        Debug.Log("Token: " + Token);
+        if (Token != "" && Password != "")
+        {
+            Connect = true;
+            // Login();
+        }
+        else
+        {
+            if (UserAdress != "")
+                SetInfos = true;
+            Connect = false;
+            Menu.gameObject.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
         if (Connect)
         {
             Debug.Log("Connect condition : " + Time.time);
@@ -42,6 +92,15 @@ public class Connection : MonoBehaviour {
             Menu.gameObject.GetComponent<BogusProfile>().Token = Token;
             Menu.gameObject.GetComponentInChildren<CardData>().Token = Token;
             ConnectionWindow.gameObject.SetActive(false);
+        }
+
+        if (SetInfos)
+        {
+            if (UserAdress != "")
+                Email.text = UserAdress;
+            if (Password != "")
+                Pass.text = Password;
+            SetInfos = false;
         }
     }
 
@@ -123,6 +182,7 @@ public class Connection : MonoBehaviour {
                 string toEdit = data["token"].ToString();
                 Token = toEdit.Substring(1, toEdit.Length - 2);
                 Connect = true;
+                SetUserData();
                 break;
             case "\"invalid_username\"":
                 ErrorMessage("Username Incorrect");
@@ -180,4 +240,15 @@ public class Connection : MonoBehaviour {
         Debug.Log("Login : " + Time.time);
     }
 
+    void SetUserData()
+    {
+        GameInstanceManager.m_gim.m_userName = UserName;
+        GameInstanceManager.m_gim.m_email = UserAdress;
+        GameInstanceManager.m_gim.m_password = Password;
+        GameInstanceManager.m_gim.m_token = Token;
+        PlayerPrefs.SetString("User", UserName);
+        PlayerPrefs.SetString("Email", UserAdress);
+        PlayerPrefs.SetString("Password", Password);
+        PlayerPrefs.SetString("Token", Token);
+    }
 }
