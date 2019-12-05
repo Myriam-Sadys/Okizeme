@@ -187,6 +187,15 @@ namespace SA
 		{
 			gm.ChangeCurrentTurn(photonId);
 		}
+
+		[PunRPC]
+		public void RPC_PlayerEndPhase(int photonId)
+		{
+			if (photonId == gm.currentPlayer.photonId)
+			{
+				gm.EndCurrentPhase();
+			}
+		}
 		#endregion
 
 		#region Card Checks
@@ -231,7 +240,7 @@ namespace SA
 		#region Card Operations
 		public enum CardOperation
 		{
-			dropResourcesCard, pickCardFromDeck, dropCreatureCard, setCardForBattle, cardToGraveyard
+			dropResourcesCard, pickCardFromDeck, dropCreatureCard, setCardForBattle, cardToGraveyard, blockCard
 		}
 
 		[PunRPC]
@@ -248,6 +257,7 @@ namespace SA
 					v.LoadCard(card);
 					card.cardPhysicalInst = go.GetComponent<CardInstance>();
 					card.cardPhysicalInst.currentLogic = dataHolder.handCard;
+					card.cardPhysicalInst.owner = p.playerHolder;
 					Settings.SetParentForCard(go.transform, p.playerHolder.currentHolder.handGrid.value);
 					p.playerHolder.handCards.Add(card.cardPhysicalInst);
 					break;
@@ -259,7 +269,10 @@ namespace SA
 						Settings.DropCreatureCard(card.cardPhysicalInst.transform, p.playerHolder.currentHolder.downGrid.value, card.cardPhysicalInst);
 						card.cardPhysicalInst.currentLogic = dataHolder.cardDownLogic;
 					}
-
+					else
+					{
+					//	Settings.RegisterEvent("Not enough resources to use card", Color.red);
+					}
 
 					card.cardPhysicalInst.gameObject.SetActive(true);
 					break;
@@ -280,6 +293,8 @@ namespace SA
 					break;
 				case CardOperation.cardToGraveyard:
 					card.cardPhysicalInst.CardInstanceToGraveyard();
+					break;
+				case CardOperation.blockCard:
 					break;
 				default:
 					break;
@@ -308,20 +323,23 @@ namespace SA
 
 		void BattleResolveForPlayers()
 		{
-			PlayerHolder p = Settings.gameManager.currentPlayer;
-			PlayerHolder e = Settings.gameManager.GetEnemyOf(p);
 
-			if (p.attackingCards.Count == 0)
+			PlayerHolder player = Settings.gameManager.currentPlayer;
+			PlayerHolder enemy = Settings.gameManager.GetEnemyOf(player);
+		
+			if (enemy.attackingCards.Count == 0)
 			{
-				photonView.RPC("RPC_BattleResolveCallback", PhotonTargets.All, p.photonId);
+				Debug.Log("enemy.attackingCards.Count == 0");
+				photonView.RPC("RPC_BattleResolveCallback", PhotonTargets.All, enemy.photonId);
+			//	photonView.RPC("RPC_PlayerEndPhase", PhotonTargets.All, player.photonId);
 				return;
 			}
 
 			Dictionary<CardInstance, BlockInstance> blockDict = Settings.gameManager.GetBlockInstances();
 
-			for (int i = 0; i < p.attackingCards.Count; i++)
+			for (int i = 0; i < enemy.attackingCards.Count; i++)
 			{
-				CardInstance inst = p.attackingCards[i];
+				CardInstance inst = enemy.attackingCards[i];
 				Card c = inst.viz.card;
 				CardProperties attack = c.GetProperty(dataHolder.attackElement);
 				if (attack == null)
@@ -332,42 +350,51 @@ namespace SA
 
 				int attackValue = attack.intValue;
 
-				//BlockInstance bi = GetBlockInstanceOfAttacker(inst, blockDict);
-				//if (bi != null)
-				//{
-				//	for (int b = 0; b < bi.blocker.Count; b++)
-				//	{
-				//		CardProperties def = c.GetProperty(defenceElement);
-				//		if (def == null)
-				//		{
-				//			Debug.LogWarning("you are trying to block with a card with no defence element!");
-				//			continue;
-				//		}
+				BlockInstance bi = GetBlockInstanceOfAttacker(inst, gm.GetBlockInstances());
+				if (bi != null)
+				{
 
-				//		attackValue -= def.intValue;
 
-				//		if (def.intValue <= attackValue)
-				//		{
-				//			bi.blocker[b].CardInstanceToGraveyard();
-				//		}
-				//	}
-				//}
+					for (int b = 0; b < bi.blocker.Count; b++)
+					{
+						CardProperties def = c.GetProperty(gm.defenceProperty);
+						if (def == null)
+						{
+							Debug.LogWarning("you are trying to block with a card with no defence element!");
+							continue;
+						}
+
+						attackValue -= def.intValue;
+
+						if (def.intValue <= attackValue)
+						{
+							bi.blocker[b].CardInstanceToGraveyard();
+						}
+					}
+				}
 
 				if (attackValue <= 0)
 				{
 					attackValue = 0;
-					PlayerWantsToUseCard(inst.viz.card.instId, p.photonId, CardOperation.cardToGraveyard);
+					PlayerWantsToUseCard(inst.viz.card.instId, enemy.photonId, CardOperation.cardToGraveyard);
 				}
 
-				p.DropCard(inst, false);
+				enemy.DropCard(inst, false);
 				
-				e.DoDamage(attackValue);
-				photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All, e.photonId, e.health);
+				player.DoDamage(attackValue);
+				photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All, player.photonId, player.health);
 			}
 
-			photonView.RPC("RPC_BattleResolveCallback", PhotonTargets.All, p.photonId);
-			
+			photonView.RPC("RPC_BattleResolveCallback", PhotonTargets.All, enemy.photonId);
+		//	photonView.RPC("RPC_PlayerEndPhase", PhotonTargets.All, player.photonId);
 			return;
+		}
+
+		BlockInstance GetBlockInstanceOfAttacker(CardInstance attacker, Dictionary<CardInstance, BlockInstance> blockInstances)
+		{
+			BlockInstance r = null;
+			blockInstances.TryGetValue(attacker, out r);
+			return r;
 		}
 
 		[PunRPC]
@@ -380,34 +407,73 @@ namespace SA
 
 		[PunRPC]
 		public void RPC_BattleResolveCallback(int photonId)
-		{			
-			Settings.gameManager.ClearBlockInstances();
-
-			
+		{
+			Debug.Log("RPC_BattleResolveCallback");
 			foreach (NetworkPrint p in players)
 			{
-				bool isAttacker = false;
-
-				if (p.photonId == photonId)
-				{
-					if (p == localPlayer)
-					{
-						isAttacker = true;
-						Settings.gameManager.EndCurrentPhase();
-					}
-				}
-
+				//bool isAttacker = false;
 				foreach (CardInstance c in p.playerHolder.attackingCards)
 				{
 					p.playerHolder.currentHolder.SetCardDown(c);
 					c.SetFlatfooted(true);
 				}
 
+				if (p.photonId == photonId)
+				{
+					if (p == localPlayer)
+					{
+						//isAttacker = true;
+					//	Settings.gameManager.EndCurrentPhase();
+					}
+				}
+
 				p.playerHolder.attackingCards.Clear();
 			}
+
+			foreach (BlockInstance bi in Settings.gameManager.GetBlockInstances().Values)
+			{
+				foreach (CardInstance c in bi.blocker)
+				{
+					c.owner.currentHolder.SetCardDown(c);
+				}
+			}
+
+			Settings.gameManager.ClearBlockInstances();
 			//p.attackingCards.Clear();
+
 		}
 
+		#endregion
+
+		#region Blocking
+		public void PlayerBlocksTargetCard(int cardInst, int photonId, int targetInst, int blocked)
+		{
+			photonView.RPC("RPC_PlayerBlocksTargetCard_Master", PhotonTargets.MasterClient, cardInst, photonId, targetInst, blocked);
+		}
+
+		[PunRPC]
+		public void RPC_PlayerBlocksTargetCard_Master(int cardInst, int photonId, int targetInst, int blocked)
+		{
+			NetworkPrint playerBlocker = GetPlayer(photonId);
+			Card blockerCard = playerBlocker.GetCard(cardInst);
+			NetworkPrint blockedPlayer = GetPlayer(blocked);
+			Card blockedCard = blockedPlayer.GetCard(targetInst);
+
+			int count = 0;
+			Settings.gameManager.AddBlockInstance(blockedCard.cardPhysicalInst, blockerCard.cardPhysicalInst,ref count);
+			photonView.RPC("RPC_PlayerBlocksTargetCard_Client", PhotonTargets.All, cardInst, photonId, targetInst, blocked,count);		
+		}
+
+		[PunRPC]
+		public void RPC_PlayerBlocksTargetCard_Client(int cardInst, int photonId, int targetInst, int blocked, int count)
+		{
+			NetworkPrint playerBlocker = GetPlayer(photonId);
+			Card blockerCard = playerBlocker.GetCard(cardInst);
+			NetworkPrint blockedPlayer = GetPlayer(blocked);
+			Card blockedCard = blockedPlayer.GetCard(targetInst);
+
+			Settings.SetCardForBlock(blockerCard.cardPhysicalInst.transform, blockedCard.cardPhysicalInst.transform, count);
+		}
 		#endregion
 
 		#region Multiple Card Operations
@@ -465,6 +531,21 @@ namespace SA
 			p.playerHolder.MakeAllResourcesCardsUsable();
 		}
 		#endregion
+
+		#region Management
+		public void SendPhase(string holder, string phase)
+		{
+			//photonView.RPC("RPC_MessagePhase", PhotonTargets.All, phase, holder);
+		}
+
+		[PunRPC]
+		public void RPC_MessagePhase(string phase, string holder)
+		{
+		//	Debug.Log(phase + " " + holder);
+		}
+
+		#endregion
+
 		#endregion
 	}
 }

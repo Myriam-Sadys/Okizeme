@@ -248,7 +248,7 @@ i -> Projectile
         pos.y += 80;
         Debug.Log("PROJECTILE SPAWNED");
         GameObject tmp = (GameObject) Instantiate(projectile, pos, transform.rotation);
-        tmp.GetComponent<Projectile>().Launch(this);
+       // tmp.GetComponent<Projectile>().Launch(this);
         ProjectileLaunched = true;
         GainZemePoints(9);
     }

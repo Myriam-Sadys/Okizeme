@@ -23,4 +23,4 @@ MonoBehaviour:
   turnStartActions:
   - {fileID: 11400000, guid: 1205106a3b58d04419419936a09e4b3a, type: 2}
   - {fileID: 11400000, guid: a08c79f5abd9be74fbf6ea6802f6b1e8, type: 2}
-  - {fileID: 11400000, guid: 099f36d76723bf64cbdfd97a475f3e8c, type: 2}
+  - {fileID: 11400000, guid: 1e5d7de2e114c8243b2e679c8fda4338, type: 2}

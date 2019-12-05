@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class GameOver : ScriptableObject
+public class GameOver2 : ScriptableObject
 {
     /*[MenuItem("Tools/MyTool/Do It in C#")]
     static void DoIt()

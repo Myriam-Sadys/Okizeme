@@ -18,14 +18,6 @@ namespace SA
 			return false;
 		}
 
-		BlockInstance GetBlockInstanceOfAttacker(CardInstance attacker, Dictionary<CardInstance, BlockInstance> blockInstances)
-		{
-			BlockInstance r = null;
-			blockInstances.TryGetValue(attacker, out r);
-			return r;
-		}
-
-
 		public override void OnEndPhase()
 		{
 			isInit = false;
@@ -36,6 +28,7 @@ namespace SA
 			if (!isInit)
 			{
 				isInit = true;
+				forceExit = true;
 				MultiplayerManager.singleton.SetBattleResolvePhase();
 			}
 		}

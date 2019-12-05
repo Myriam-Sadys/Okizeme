@@ -44,6 +44,7 @@ namespace SA
 		public PlayerStatsUI[] statsUI;
 		public SO.TransformVariable graveyardVariable;
 		List<CardInstance> graveyardCards = new List<CardInstance>();
+		public Element defenceProperty;
 
 		bool isInit;
 
@@ -238,6 +239,7 @@ namespace SA
 		{
 			if (currentPlayer.isHumanPlayer)
 			{
+			//	Settings.RegisterEvent(turns[turnIndex].name + " finished", currentPlayer.playerColor);
 				turns[turnIndex].EndCurrentPhase();
 			}
 		}

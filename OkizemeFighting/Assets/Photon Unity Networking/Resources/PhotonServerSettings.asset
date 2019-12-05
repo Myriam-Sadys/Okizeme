@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  AppID: adcc11c7-11a0-4854-8071-26c4fc6c1e13
+  AppID: e39fc4b0-9afa-4122-a628-8d69f5cc6fca
   VoiceAppID: 
   ChatAppID: 
   HostType: 1
@@ -42,18 +42,25 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
-  - TaggedPlayer
+  - RPC_BattleResolve
+  - RPC_BattleResolveCallback
   - RPC_InitGame
+  - RPC_PlayerCreatesCard
   - RPC_PlayerEndsTurn
   - RPC_PlayerStartsTurn
-  - RPC_PlayerCreatesCard
   - RPC_PlayerUsesCard
-  - RPC_PlayerWantsToUseCard
   - RPC_PlayerWantsToResetResourcesCards_Master
+  - RPC_PlayerWantsToUseCard
   - RPC_ResetFlatfootedCardsForPlayer
   - RPC_ResetFlatfootedCardsForPlayer_Master
   - RPC_ResetResourcesCardsForPlayer
-  - RPC_BattleResolve
-  - RPC_BattleResolveCallback
   - RPC_SyncPlayerHealth
+  - TaggedPlayer
+  - DealsDamage
+  - GainZeme
+  - JoinRoom
+  - RPC_PlayerBlocksTargetCard_Client
+  - RPC_PlayerBlocksTargetCard_Master
+  - RPC_MessagePhase
+  - RPC_PlayerEndPhase
   DisableAutoOpenWizard: 1
