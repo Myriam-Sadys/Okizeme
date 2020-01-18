@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b31130a75ab93b41a4911ad2c42edfe, type: 3}
   m_Name: Local Player
   m_EditorClassIdentifier: 
-  username: Player_1
+  username: local
   potrait: {fileID: 21300000, guid: eb72a4311d7ed194e929b50cf779490e, type: 3}
-  RessourcesAvailable: 5
+  RessourcesAvailable: 4
   statsUI: {fileID: 0}
   startingDeck:
   - Flying Carpet
@@ -26,4 +26,4 @@ MonoBehaviour:
   isHumanPlayer: 1
   handLogic: {fileID: 11400000, guid: f5d230e2776077749b2e9c8e03f5664e, type: 2}
   downLogic: {fileID: 11400000, guid: ccd3fb8b2aef5ea4b9968dc59c47b83e, type: 2}
-  RessourcesTurn: 6
+  RessourcesTurn: 5

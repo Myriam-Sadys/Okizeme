@@ -7,6 +7,11 @@ namespace SA
     [CreateAssetMenu(menuName = "Card")]
     public class Card : ScriptableObject
     {
+        [System.NonSerialized]
+        public int instId;
+        [System.NonSerialized]
+        public CardInstance cardPhysicalInst;
+
         public CardType cardType;
         public int cost;
         public CardProperties[] properties;

@@ -33,8 +33,8 @@ public class BogusProfile : MonoBehaviour {
 
     void onCardClicked(Card clickedCard)
     {
-        EditDisplayedCard(clickedCard);
         windowCard.SetActive(true);
+        //EditDisplayedCard(clickedCard);
     }
 
     // Update is called once per frame
@@ -103,28 +103,6 @@ public class BogusProfile : MonoBehaviour {
         TextComponent[11].text = card.type;
         TextComponent[12].text = card.life_points.ToString();
         displayedCard.texture = card.image;
-    }
-    void EditDisplayedCard(Card card)
-    {
-        Button[] ButtonComponent = windowCard.GetComponentsInChildren<Button>();
-        Text[] TextComponent = windowCard.GetComponentsInChildren<Text>();
-        ButtonComponent[1].gameObject.GetComponent<SpecialAttackButton>().Hability = card.Fighting_moves.Find(x => x.Type == "special_attack_1").Hability;
-        ButtonComponent[2].gameObject.GetComponent<SpecialAttackButton>().Hability = card.Fighting_moves.Find(x => x.Type == "special_attack_2").Hability;
-        ButtonComponent[3].gameObject.GetComponent<SpecialAttackButton>().Hability = card.Fighting_moves.Find(x => x.Type == "special_attack_3").Hability;
-        TextComponent[0].text = card.Fighting_moves.Find(x => x.Type == "jump_height").TypeValue.ToString();
-        TextComponent[1].text = card.Fighting_moves.Find(x => x.Type == "move_speed").TypeValue.ToString();
-        TextComponent[2].text = card.Fighting_moves.Find(x => x.Type == "standard_aerial_attack").Hability.Damages.ToString() + "/" +
-                                card.Fighting_moves.Find(x => x.Type == "powerful_aerial_attack").Hability.Damages.ToString();
-        TextComponent[3].text = card.Fighting_moves.Find(x => x.Type == "standard_attack").Hability.Damages.ToString() + "/" +
-                                card.Fighting_moves.Find(x => x.Type == "powerful_attack").Hability.Damages.ToString();
-        TextComponent[4].text = card.Combo_bar_size.ToString();
-        TextComponent[5].text = card.Stamina_points.ToString();
-        TextComponent[6].text = card.Name;
-        TextComponent[7].text = card.Description;
-        TextComponent[9].text = card.Capacity;
-        TextComponent[11].text = card.Type;
-        TextComponent[12].text = card.Life_points.ToString();
-        displayedCard = card.Image;
     }
 
     IEnumerator WaitEndAnimation()

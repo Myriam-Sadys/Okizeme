@@ -9,9 +9,6 @@ namespace SA
         public CardVariable card;
         public CardType creatureType;
         public CardType resourceType;
-        public SO.TransformVariable areaGrid;
-        public SO.TransformVariable resourceGrid;
-        public GameElements.GE_Logic cardDownLogic;
 
         public override void Execute()
         {
@@ -22,18 +19,10 @@ namespace SA
 
             if (c.cardType == creatureType)
             {
-                bool canUse = Settings.gameManager.currentPlayer.CanUseCard(c);
-
-                if (canUse)
-                {
-                    Settings.DropCreatureCard(card.value.transform, areaGrid.value.transform,card.value);
-                    card.value.currentLogic = cardDownLogic;
-                }
-                    card.value.gameObject.SetActive(true);
-
-                //Place card down
+                MultiplayerManager.singleton.PlayerWantsToUseCard(c.instId, GameManager.singleton.localPlayer.photonId, MultiplayerManager.CardOperation.dropCreatureCard);
+               
             }
-            else
+           /* else
             if(c.cardType == resourceType)
             {
                 bool canUse = Settings.gameManager.currentPlayer.CanUseCard(c);
@@ -46,7 +35,7 @@ namespace SA
                 }
 
                 card.value.gameObject.SetActive(true);
-            }
+            }*/
         }
     }
 }

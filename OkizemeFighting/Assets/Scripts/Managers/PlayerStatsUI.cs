@@ -35,6 +35,7 @@ namespace SA
         public void UpdatePZ()
         {
             PZ.text = player.RessourcesAvailable.ToString();
+
         }
     }
 }
