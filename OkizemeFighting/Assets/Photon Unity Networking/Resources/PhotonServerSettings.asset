@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  AppID: e39fc4b0-9afa-4122-a628-8d69f5cc6fca
+  AppID: 2eab97d6-3b79-430e-8f55-bc5eb8b0264a
   VoiceAppID: 
-  ChatAppID: 
+  ChatAppID: 2eab97d6-3b79-430e-8f55-bc5eb8b0264a
   HostType: 1
   PreferredRegion: 0
   EnabledRegions: -1
@@ -30,10 +30,13 @@ MonoBehaviour:
   RpcList:
   - Chat
   - ColorRpc
+  - DealsDamage
   - DestroyRpc
   - DoJump
   - Flash
+  - GainZeme
   - InstantiateRpc
+  - JoinRoom
   - Marco
   - PickupItemInit
   - Polo
@@ -45,7 +48,11 @@ MonoBehaviour:
   - RPC_BattleResolve
   - RPC_BattleResolveCallback
   - RPC_InitGame
+  - RPC_MessagePhase
+  - RPC_PlayerBlocksTargetCard_Client
+  - RPC_PlayerBlocksTargetCard_Master
   - RPC_PlayerCreatesCard
+  - RPC_PlayerEndPhase
   - RPC_PlayerEndsTurn
   - RPC_PlayerStartsTurn
   - RPC_PlayerUsesCard
@@ -56,11 +63,4 @@ MonoBehaviour:
   - RPC_ResetResourcesCardsForPlayer
   - RPC_SyncPlayerHealth
   - TaggedPlayer
-  - DealsDamage
-  - GainZeme
-  - JoinRoom
-  - RPC_PlayerBlocksTargetCard_Client
-  - RPC_PlayerBlocksTargetCard_Master
-  - RPC_MessagePhase
-  - RPC_PlayerEndPhase
   DisableAutoOpenWizard: 1

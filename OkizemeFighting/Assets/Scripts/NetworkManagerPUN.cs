@@ -151,7 +151,7 @@ namespace Okizeme.Fight
 
             Debug.Log("PhotonNetwork : Loading Level : " + PhotonNetwork.room.PlayerCount);
 
-            PhotonNetwork.LoadLevel("MainScene2");
+            PhotonNetwork.LoadLevel("FightScene");
         }
 
         #endregion

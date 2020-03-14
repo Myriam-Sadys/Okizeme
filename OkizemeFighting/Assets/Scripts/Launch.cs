@@ -270,7 +270,7 @@ public class Launch : Photon.PunBehaviour {
             yield return new WaitForSeconds(0.2f);
         }
         if (PhotonNetwork.isMasterClient)
-            PhotonNetwork.LoadLevel("MainScene2");
+            PhotonNetwork.LoadLevel("FightScene");
     }
 
     #endregion

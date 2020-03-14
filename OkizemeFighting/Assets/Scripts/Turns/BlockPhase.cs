@@ -50,7 +50,7 @@ namespace SA
 
                 else
                 {
-                    SceneManager.LoadScene(3, LoadSceneMode.Single);
+                    SceneManager.LoadScene("FightScene", LoadSceneMode.Single);
                     Scene currentScene = SceneManager.GetActiveScene();
                 }
 
