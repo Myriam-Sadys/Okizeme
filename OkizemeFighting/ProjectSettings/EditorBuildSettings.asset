@@ -73,7 +73,7 @@ EditorBuildSettings:
     path: Assets/Scenes/WaitingForOpponent.unity
     guid: 93f590952aa3f9747bedede1c6765dea
   - enabled: 1
-    path: Assets/Scenes/MainScene2.unity
+    path: Assets/Scenes/Fight.unity
     guid: 32ae4bb70f8aa2249a3d790b9d7550da
   - enabled: 1
     path: Assets/Scenes/YouWon.unity

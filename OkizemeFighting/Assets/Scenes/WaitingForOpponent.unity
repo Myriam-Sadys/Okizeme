@@ -5388,9 +5388,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlPanel: {fileID: 429441627}
   feedbackText: {fileID: 1899094329}
-  maxPlayersPerRoom: 1
-  NamePlayer1: Merwan
-  NamePlayer2: Seb
+  maxPlayersPerRoom: 2
+  NamePlayer1: Maku
+  NamePlayer2: Eclair
   timeLeft: 3
   loaderAnime: {fileID: 2114019168}
 --- !u!114 &1654750418

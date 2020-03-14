@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 375179655086319175}
   m_Layer: 0
   m_Name: Bras gauche
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113530011821039267}
-  m_LocalRotation: {x: 0, y: 0, z: 0.9933004, w: -0.115561455}
+  m_LocalRotation: {x: 0, y: 0, z: 0.993302, w: -0.11554742}
   m_LocalPosition: {x: 1.0058014, y: 0.014403687, z: 0}
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
   m_Children:
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 3842404404527784317}
   m_Layer: 0
   m_Name: Torse
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 7257716856917359678}
   m_Layer: 0
   m_Name: Robe2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 8223718580918945347}
   m_Layer: 0
   m_Name: Bas robe2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 1097613165877913422}
   m_Layer: 0
   m_Name: FirePoint
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 6539665417047652117}
   m_Layer: 0
   m_Name: "T\xEAte"
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: -9135066385779343300}
   m_Layer: 0
   m_Name: Maku
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -286,7 +286,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621494574842343755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 101.96348, y: 277.96893, z: 0}
+  m_LocalPosition: {x: 102.064, y: 277.96893, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_Children:
   - {fileID: 5407974041149472055}
@@ -597,7 +597,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: special_3_t
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 5244632420285441377}
   m_Layer: 0
   m_Name: Avant bras gauche
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -640,7 +640,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626319709445413497}
-  m_LocalRotation: {x: 0, y: 0, z: 0.62167734, w: 0.78327346}
+  m_LocalRotation: {x: 0, y: 0, z: 0.621691, w: 0.7832626}
   m_LocalPosition: {x: 1.2542037, y: 0.03122091, z: 0}
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
   m_Children:
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 4152941632106288714}
   m_Layer: 0
   m_Name: Robe1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -709,7 +709,7 @@ GameObject:
   - component: {fileID: 3409731113793869463}
   m_Layer: 0
   m_Name: UpArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -818,7 +818,7 @@ GameObject:
   - component: {fileID: 4567368553956082755}
   m_Layer: 0
   m_Name: Hair2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 545602052641378840}
   m_Layer: 0
   m_Name: Haut robe1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -882,7 +882,7 @@ GameObject:
   - component: {fileID: 8069156242463838962}
   m_Layer: 0
   m_Name: Legs
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1000,7 +1000,7 @@ GameObject:
   - component: {fileID: 6607410818990063868}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1114,7 +1114,7 @@ GameObject:
   - component: {fileID: 9166627137101837069}
   m_Layer: 0
   m_Name: Avant bras droit
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1126,7 +1126,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3999703410392881165}
-  m_LocalRotation: {x: 0, y: 0, z: 0.57548624, w: 0.8178114}
+  m_LocalRotation: {x: 0, y: 0, z: 0.5754907, w: 0.81780833}
   m_LocalPosition: {x: 1.2627382, y: -0.0000000012887518, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1162,7 +1162,7 @@ GameObject:
   - component: {fileID: 4104093082547389712}
   m_Layer: 0
   m_Name: RightArmSolver_Target
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 4104093082913511874}
   m_Layer: 0
   m_Name: LeftArmSolver_Target
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1222,7 +1222,7 @@ GameObject:
   - component: {fileID: 4104093083567424994}
   m_Layer: 0
   m_Name: RightArmEffector
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1234,13 +1234,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4104093083567424993}
-  m_LocalRotation: {x: -0, y: -0, z: -0.25708523, w: 0.9663888}
+  m_LocalRotation: {x: -0, y: -0, z: -0.25707823, w: 0.9663906}
   m_LocalPosition: {x: 1.164261, y: -0.086078905, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7185250149389139192}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -29.794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -29.793001}
 --- !u!1 &4104093083629131727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1253,7 +1253,7 @@ GameObject:
   - component: {fileID: 4104093083629131721}
   m_Layer: 0
   m_Name: GunFireLeft
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1332,7 +1332,7 @@ GameObject:
   - component: {fileID: 4104093083790968591}
   m_Layer: 0
   m_Name: LeftArmSolver
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1395,7 +1395,7 @@ GameObject:
   - component: {fileID: 4104093083813268918}
   m_Layer: 0
   m_Name: LeftArmEffector
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1407,7 +1407,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4104093083813268917}
-  m_LocalRotation: {x: -0, y: -0, z: -0.96503055, w: 0.26213762}
+  m_LocalRotation: {x: -0, y: -0, z: -0.96503145, w: 0.26213446}
   m_LocalPosition: {x: 1.26, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1426,7 +1426,7 @@ GameObject:
   - component: {fileID: 4104093083814938089}
   m_Layer: 0
   m_Name: GunFireRight
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1505,7 +1505,7 @@ GameObject:
   - component: {fileID: 4104093084291020296}
   m_Layer: 0
   m_Name: RightArmSolver
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1569,7 +1569,7 @@ GameObject:
   - component: {fileID: 4740772111035621474}
   m_Layer: 0
   m_Name: Bras droit
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1581,7 +1581,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4589556903262515767}
-  m_LocalRotation: {x: 0, y: 0, z: -0.98375785, w: 0.17950091}
+  m_LocalRotation: {x: 0, y: 0, z: -0.9837601, w: 0.1794884}
   m_LocalPosition: {x: 1.0068485, y: -0.027544253, z: 0}
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
   m_Children:
@@ -1619,7 +1619,7 @@ GameObject:
   - component: {fileID: 5377350915968660536}
   m_Layer: 0
   m_Name: UpArm_1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1728,7 +1728,7 @@ GameObject:
   - component: {fileID: 1612449055045437166}
   m_Layer: 0
   m_Name: Bas robe1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1759,7 +1759,7 @@ GameObject:
   - component: {fileID: 7258066644722608055}
   m_Layer: 0
   m_Name: Fesse
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1827,7 +1827,7 @@ GameObject:
   - component: {fileID: 8708914192311186980}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1840,7 +1840,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7174469602461532169}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 0.94, z: 0}
+  m_LocalPosition: {x: -0.04, y: 0.94, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 6862951599090060772}
@@ -1860,7 +1860,7 @@ GameObject:
   - component: {fileID: 3538210853451023511}
   m_Layer: 0
   m_Name: LowArm_1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1969,7 +1969,7 @@ GameObject:
   - component: {fileID: 2789009767112009686}
   m_Layer: 0
   m_Name: Hair1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2000,7 +2000,7 @@ GameObject:
   - component: {fileID: 5165790456757785}
   m_Layer: 0
   m_Name: Ceilling
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2030,7 +2030,7 @@ GameObject:
   - component: {fileID: 5616325027523788080}
   m_Layer: 0
   m_Name: Robe3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2060,7 +2060,7 @@ GameObject:
   - component: {fileID: 3154960455576612406}
   m_Layer: 0
   m_Name: Haut robe2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2094,7 +2094,7 @@ GameObject:
   - component: {fileID: 2949316336796395875}
   m_Layer: 0
   m_Name: LowArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2209,15 +2209,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8463838806146568281, guid: fe16f93f81dc70041b731ef1bc18032d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: -4512751730462497630, guid: fe16f93f81dc70041b731ef1bc18032d,
         type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4512751730462497630, guid: fe16f93f81dc70041b731ef1bc18032d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1681743696395266821, guid: fe16f93f81dc70041b731ef1bc18032d,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1681743696395266821, guid: fe16f93f81dc70041b731ef1bc18032d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: -7950824743204938840, guid: fe16f93f81dc70041b731ef1bc18032d,
         type: 3}

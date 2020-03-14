@@ -36,12 +36,12 @@ namespace Okizeme.Fight
             if (alreadyHit)
                 return;
 
-            PlayerManager enemy = hitInfo.GetComponent<PlayerManager>();
-            if (this.photonView.isMine && enemy != null)
+            if (this.photonView.isMine && hitInfo.gameObject.tag == "Player")
             {
+                PlayerManager enemy = hitInfo.transform.GetComponentInParent(typeof(PlayerManager)) as PlayerManager;
                 alreadyHit = true;
                 timer = 0f;
-                Debug.Log("Is an ennemy");
+                Debug.Log("Is an ennemy" + enemy + "-" + hitInfo.gameObject);
                 enemy.SendMessage("DamageEnemy", DamagePerSpell);
             }
             else
@@ -57,7 +57,7 @@ namespace Okizeme.Fight
             {
                 Debug.Log("It's enemy's bullet");
                 GetComponent<SpriteRenderer>().enabled = false;
-                GetComponent<CircleCollider2D>().enabled = false;
+                GetComponent<PolygonCollider2D>().enabled = false;
             }
 
         }

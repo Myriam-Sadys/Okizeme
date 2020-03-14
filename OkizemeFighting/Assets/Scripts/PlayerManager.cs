@@ -186,9 +186,9 @@ namespace Okizeme.Fight
                 RaycastHit2D hit;
                 Debug.DrawLine(firePoint.transform.position, transform.position + transform.right * 100, Color.red, 2.5f);
                 hit = Physics2D.Raycast(firePoint.position, transform.position + transform.right * 100, Mathf.Infinity);
-                if (hit.collider.name == "PlayerObject(Clone)" && hit.distance == 0)
+                if (hit.collider.tag == "Player" && hit.distance == 0)
                 {
-                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name + " tag: " + hit.collider.tag);
                     hit.transform.GetComponent<PlayerManager>().SendMessage("DamageEnemy", DamagePerHit);
                     PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, ZemePerDamageDone);
                 }
@@ -218,14 +218,24 @@ namespace Okizeme.Fight
                 ProjectileLaunched = false;
             }
 
+            //if (Input.GetButtonDown("Guard"))
+            //{
+            //    animator.SetTrigger("defend_t");
+            //    block = true;
+            //}
+            //else if (Input.GetButtonUp("Guard"))
+            //{
+            //    animator.ResetTrigger("defend_t");
+            //    block = false;
+            //}
             if (Input.GetButtonDown("Guard"))
             {
-                animator.SetTrigger("defend_t");
+                animator.SetBool("IsBlocking", true);
                 block = true;
             }
             else if (Input.GetButtonUp("Guard"))
             {
-                animator.ResetTrigger("defend_t");
+                animator.SetBool("IsBlocking", false);
                 block = false;
             }
 
