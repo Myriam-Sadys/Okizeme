@@ -33,7 +33,7 @@ public class Connection : MonoBehaviour
 
     void Start()
     {
-        APIurl = "http://api.okizeme.dahobul.com/";
+        APIurl = "https://api.okizeme.dahobul.com/";
         ConnectionTry = 0;
         CreateAccount = false;
         UserName = GameInstanceManager.m_gim.m_userName;
@@ -59,7 +59,7 @@ public class Connection : MonoBehaviour
 
     public void Awake()
     {
-        APIurl = "http://api.okizeme.dahobul.com/";
+        APIurl = "https://api.okizeme.dahobul.com/";
         ConnectionTry = 0;
         CreateAccount = false;
         UserName = GameInstanceManager.m_gim.m_userName;
