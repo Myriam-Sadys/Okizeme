@@ -91,7 +91,7 @@ public class CardData : MonoBehaviour {
         UpdateHand = false;
         HandCards = new List<Card>();
         GalleryCards = new List<Card>();
-        APIurl = "http://api.okizeme.dahobul.com/";
+        APIurl = "https://api.okizeme.dahobul.com/";
         Decks = new List<Deck>();
         StartCoroutine(GetCardsFromAPI());
         StartCoroutine(SetAcountInformation());
