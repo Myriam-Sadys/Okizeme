@@ -13,7 +13,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using System.Collections;
-namespace Okizeme.Fight
+namespace SA//Okizeme.Fight
 {
     public class PlayerUI : MonoBehaviour
     {

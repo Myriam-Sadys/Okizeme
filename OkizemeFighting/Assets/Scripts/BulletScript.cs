@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Okizeme.Fight
+namespace SA
+//namespace Okizeme.Fight
 {
     public class BulletScript : Photon.PunBehaviour
     {

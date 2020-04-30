@@ -10,8 +10,9 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-namespace Okizeme.Fight
+namespace SA //Okizeme.Fight
 {
     public class PlayerManager : Photon.PunBehaviour, IPunObservable
     {
@@ -132,10 +133,25 @@ namespace Okizeme.Fight
                 horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
                 animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-
-                if (this.Health <= 0f)
+                if (Fight.ennemyDead)
                 {
-                    NetworkManagerPUN.Instance.LeaveRoom();
+                    Debug.Log("test");
+                    Fight.IsLoose = false;
+                    Fight.IsResolve = true;
+                    SceneManager.UnloadSceneAsync("FightScene");
+                    Fight.IsFight = false;
+                    Destroy(this);
+                }
+
+                else if (this.Health <= 0f)
+                {
+                    Imdead();                  
+                    Fight.IsLoose = true;
+                    Debug.Log("perdu");
+                    Fight.IsResolve = true;
+                    SceneManager.UnloadSceneAsync("FightScene");
+                    Fight.IsFight = false;
+                    Destroy(this);
                 }
 
             }
@@ -253,6 +269,18 @@ namespace Okizeme.Fight
                 pos.y += 0.25f;
                 firePoint.transform.position = pos;
             }
+        }
+
+        private void Imdead()
+        {
+            PhotonView.Get(this).RPC("ImDeads", PhotonTargets.Others, "salut");
+        }
+
+        [PunRPC]
+        private void ImDeads(string test)
+        {
+            Debug.Log("<color=red>"+test+"</color>");
+            Fight.ennemyDead = true;
         }
 
         private void DamageEnemy(float dmg)

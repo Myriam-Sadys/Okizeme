@@ -7,6 +7,8 @@ namespace SA
     [CreateAssetMenu(menuName = "Turns/Turn")]
     public class Turn : ScriptableObject
     {
+        public bool tmp;
+
         public PlayerHolder player;
         [System.NonSerialized]
         public int index = 0;
@@ -21,6 +23,7 @@ namespace SA
                 return;
             for (int i = 0; i < turnStartActions.Length; i++)
             {
+                Debug.Log(turnStartActions[i].name);
                 turnStartActions[i].Execute(player);
             }
         }
@@ -28,26 +31,32 @@ namespace SA
         public bool Execute()
         {
             bool result = false;
-
             currentPhase.value = phases[index];
             phases[index].OnStartPhase();
-
+          //  Debug.Log("debut de la phase " + phases[index].name + " de " + player.name);
 
             bool phaseIsComplete = phases[index].IsComplete();
 
             if (phaseIsComplete)
             {
+
+                Debug.Log("fin de la phase " + phases[index].name + " de " + player.name);
                 phases[index].OnEndPhase();
                 index++;
-                if (index > phases.Length-1)
+                if (index > phases.Length - 1)
                 {
                     index = 0;
                     result = true;
                 }
-               
+                tmp = false;
 
-               
 
+
+            }
+            else if (tmp == false)
+            {
+                Debug.Log("<color=blue>"+phases[index].name+"</color>" );
+                tmp = true;
             }
 
             return result;

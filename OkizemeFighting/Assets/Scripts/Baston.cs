@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Baston : MonoBehaviour
+namespace SA
 {
-    public void bastonscene()
+    public class Baston : MonoBehaviour
     {
-        SceneManager.LoadScene(3, LoadSceneMode.Single);
-        Scene currentScene = SceneManager.GetActiveScene();
+        public void bastonscene()
+        {
+            //SceneManager.LoadScene(3, LoadSceneMode.Single);
+            Fight.IsFight = false;
+//            Scene currentScene = SceneManager.GetActiveScene();
+        }
     }
 }

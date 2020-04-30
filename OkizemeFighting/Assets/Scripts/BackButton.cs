@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class BackButton : MonoBehaviour
 {
     [SerializeField]
-    string SceneToLoad = "Menu";
+    string SceneToLoad = "Menu_update";
 
     public void LoadScene()
     {

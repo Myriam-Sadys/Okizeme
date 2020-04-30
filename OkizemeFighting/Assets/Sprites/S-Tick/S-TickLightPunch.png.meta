@@ -1,12 +1,18 @@
 fileFormatVersion: 2
 guid: 9f3fa99d19a12544787cd2e665cceb07
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: S-TickLightPunch_0
-    21300002: S-TickLightPunch_1
-    21300004: S-TickLightPunch_2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: S-TickLightPunch_0
+  - first:
+      213: 21300002
+    second: S-TickLightPunch_1
+  - first:
+      213: 21300004
+    second: S-TickLightPunch_2
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -102,6 +108,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3b402657cee8b1e49a00a894a09d158a
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -122,6 +129,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7de43eb6ac569e540a4dd6110f5223d6
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -142,6 +150,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 62f8e2a5bd9982b42b90789fbf32f181
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -150,10 +159,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: ca375a1e88350294abac83a7aaa54bec
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

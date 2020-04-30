@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-namespace Okizeme.Fight
+namespace SA//Okizeme.Fight
 {
     public class Timer : MonoBehaviour
     {

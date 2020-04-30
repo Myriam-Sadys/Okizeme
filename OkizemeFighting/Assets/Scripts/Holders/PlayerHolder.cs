@@ -186,7 +186,7 @@ namespace SA
             if (health < 1)
             {
                 StaticClass2.Loser = username;
-                SceneManager.LoadScene(3);
+                SceneManager.LoadScene("YouLost");
             }
         }
 		

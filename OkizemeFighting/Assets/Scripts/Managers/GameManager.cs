@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SA.GameStates;
+using UnityEngine.SceneManagement;
 
 namespace SA
 {
@@ -94,9 +95,9 @@ namespace SA
 
 		public void InitGame(int startingPlayer)
 		{
+            Debug.Log("Debut de la partie");
 			all_players = new PlayerHolder[turns.Length];
 			Turn[] _turns = new Turn[2];
-
 			for (int i = 0; i < turns.Length; i++)
 			{
 				all_players[i] = turns[i].player;
@@ -110,8 +111,9 @@ namespace SA
 					_turns[1] = turns[i];
 				}
 			}
-
-			turns = _turns;
+            Debug.Log("Joueur 1 commence (" + _turns[0].name + ")");
+            Debug.Log("Joueur 2 joue en deuxieme (" +_turns[1].name +")");
+            turns = _turns;
 		
 			SetupPlayers();
 
@@ -141,7 +143,8 @@ namespace SA
 				all_players[i].statsUI = statsUI[i];
 				all_players[i].currentHolder.LoadPlayer(all_players[i], all_players[i].statsUI);
 			}
-		}
+            Debug.Log("Setup de chaque joueur");
+        }
 
 		public void PickNewCardFromDeck(PlayerHolder p)
 		{
@@ -163,35 +166,61 @@ namespace SA
 		
 		private void Update()
 		{
+            //Debug.Log(turns[turnIndex].name);
+            
 			if (!isInit)
 				return;
-
 			bool isComplete = turns[turnIndex].Execute();
+            if (Fight.IsLoose && Fight.IsResolve)
+            {
+                localPlayer.health -= 3;
+                PutCardToGraveyard(localPlayer.cardsDown[0]);
+                Fight.IsResolve = false;
+              //  MainDataHolder dataHolder;
+              //  clientPlayer.cardsDown[0].viz.card.GetProperty(dataHolder.attackElement);
+               // MultiplayerManager.singleton.SetBattleResolvePhase();
+                //MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
+            }
+            else if (Fight.IsResolve)
+            {
+                clientPlayer.health -= 3;
+                PutCardToGraveyard(clientPlayer.cardsDown[0]);
+                Fight.IsResolve = false;
+              // MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
+            }
 
-			if (!isMultiplayer)
-			{
-				if (isComplete)
-				{
-					turnIndex++;
-					if (turnIndex > turns.Length - 1)
-					{
-						turnIndex = 0;
-					}
+            if (clientPlayer.health < 1)
+                {
+                    SceneManager.LoadScene("YouWon");
+                }
 
-					//The current player has changed here
-					currentPlayer = turns[turnIndex].player;
-					turns[turnIndex].OnTurnStart();
-					turnText.value = turns[turnIndex].player.username;
-					onTurnChanged.Raise();
+
+            /*		if (!isMultiplayer)
+                    {
+                        Debug.Log("ça boucle la");
+                        if (isComplete)
+                        {
+                            turnIndex++;
+                            if (turnIndex > turns.Length - 1)
+                            {
+                                turnIndex = 0;
+                            }
+
+                            //The current player has changed here
+                            currentPlayer = turns[turnIndex].player;
+                            turns[turnIndex].OnTurnStart();
+                            turnText.value = turns[turnIndex].player.username;
+                            onTurnChanged.Raise();
+                        }
+                    }
+                    else
+                    {*/
+
+            if (isComplete)
+                {
+                    MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
 				}
-			}
-			else
-			{
-				if (isComplete)
-				{
-					MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
-				}
-			}
+			//}
 
 			if(currentState != null)
 				currentState.Tick(Time.deltaTime);
@@ -225,6 +254,7 @@ namespace SA
 		{
 			turnIndex = GetPlayerTurnIndex(photonId);
 			currentPlayer = turns[turnIndex].player;
+            Debug.Log("<color=green>Joueur " + (turnIndex + 1) + " commence son tour</color>");
 			turns[turnIndex].OnTurnStart();
 			turnText.value = turns[turnIndex].player.username;
 			onTurnChanged.Raise();
@@ -237,11 +267,11 @@ namespace SA
 
 		public void EndCurrentPhase()
 		{
-			if (currentPlayer.isHumanPlayer)
-			{
+		//	if (currentPlayer.isHumanPlayer)
+		//	{
 			//	Settings.RegisterEvent(turns[turnIndex].name + " finished", currentPlayer.playerColor);
 				turns[turnIndex].EndCurrentPhase();
-			}
+			//}
 		}
 
 		public void PutCardToGraveyard(CardInstance c)

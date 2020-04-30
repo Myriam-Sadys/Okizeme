@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SA
 {
@@ -174,6 +175,7 @@ namespace SA
 		{
 			if (photonId == gm.currentPlayer.photonId)
 			{
+                Debug.Log("Joueur " + photonId + " a finis son tour");
 				if (NetworkManager.isMaster)
 				{
 					int targetId = gm.GetNextPlayerID();
@@ -201,6 +203,7 @@ namespace SA
 		#region Card Checks
 		public void PlayerPicksCardFromDeck(PlayerHolder playerHolder)
 		{
+            Debug.Log(playerHolder.name + " pioche une carte");
 			NetworkPrint p = GetPlayer(playerHolder.photonId);
 
 			Card c = p.deckCards[0];
@@ -323,13 +326,13 @@ namespace SA
 
 		void BattleResolveForPlayers()
 		{
-
+            Debug.Log("reolution du combat");
 			PlayerHolder player = Settings.gameManager.currentPlayer;
 			PlayerHolder enemy = Settings.gameManager.GetEnemyOf(player);
 		
 			if (enemy.attackingCards.Count == 0)
 			{
-				Debug.Log("enemy.attackingCards.Count == 0");
+				//Debug.Log("enemy.attackingCards.Count == 0");
 				photonView.RPC("RPC_BattleResolveCallback", PhotonTargets.All, enemy.photonId);
 			//	photonView.RPC("RPC_PlayerEndPhase", PhotonTargets.All, player.photonId);
 				return;
@@ -339,6 +342,7 @@ namespace SA
 
 			for (int i = 0; i < enemy.attackingCards.Count; i++)
 			{
+                Debug.Log("on est la");
 				CardInstance inst = enemy.attackingCards[i];
 				Card c = inst.viz.card;
 				CardProperties attack = c.GetProperty(dataHolder.attackElement);
@@ -383,6 +387,10 @@ namespace SA
 				
 				player.DoDamage(attackValue);
 				photonView.RPC("RPC_SyncPlayerHealth", PhotonTargets.All, player.photonId, player.health);
+                if(enemy.health < 0)
+                {
+                    SceneManager.LoadScene("YouWon");
+                }
 			}
 
 			photonView.RPC("RPC_BattleResolveCallback", PhotonTargets.All, enemy.photonId);
@@ -408,7 +416,7 @@ namespace SA
 		[PunRPC]
 		public void RPC_BattleResolveCallback(int photonId)
 		{
-			Debug.Log("RPC_BattleResolveCallback");
+			//Debug.Log("RPC_BattleResolveCallback");
 			foreach (NetworkPrint p in players)
 			{
 				//bool isAttacker = false;

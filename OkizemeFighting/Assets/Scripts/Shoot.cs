@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Okizeme.Fight
+namespace SA//Okizeme.Fight
 {
     public class Shoot : MonoBehaviour
     {

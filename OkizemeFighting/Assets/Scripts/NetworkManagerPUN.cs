@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Okizeme.Fight
+
+namespace SA//Okizeme.Fight
 {
     public class NetworkManagerPUN : Photon.PunBehaviour
     {
@@ -111,8 +112,11 @@ namespace Okizeme.Fight
             if (PhotonNetwork.isMasterClient)
             {
                 Debug.Log("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // called before OnPhotonPlayerDisconnected
-
-                SceneManager.LoadScene("YouWon");
+                Fight.IsFight = false;
+                Fight.IsLoose = false;
+                Fight.IsResolve = true;
+                SceneManager.UnloadSceneAsync(2);
+               // SceneManager.LoadScene("YouWon");
             }
         }
 
@@ -121,7 +125,13 @@ namespace Okizeme.Fight
         /// </summary>
         public override void OnLeftRoom()
         {
-            SceneManager.LoadScene("YouLost");
+            Fight.IsFight = false;
+            Fight.IsLoose = true;
+            Debug.Log("perdu");
+            Fight.IsResolve = true;
+            PhotonNetwork.ReJoinRoom("myRoom");
+            SceneManager.UnloadSceneAsync(2);
+            //SceneManager.LoadScene("YouLost");
         }
 
         #endregion
