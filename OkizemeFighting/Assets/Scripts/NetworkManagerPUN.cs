@@ -11,9 +11,9 @@ namespace SA//Okizeme.Fight
         #region Public Variables
 
         static public NetworkManagerPUN Instance;
-        [Tooltip("The prefabs of all the players")]
-        public GameObject[] playersPrefab;
 
+        [Tooltip("The prefab to use for representing the player")]
+        public GameObject playerPrefab;
 
         [Tooltip("The SpawnPoints of the players")]
         public GameObject SpawnPoint1;
@@ -23,11 +23,8 @@ namespace SA//Okizeme.Fight
 
         #region Private Variables
 
-        [Tooltip("The prefab to use for representing the player")]
-        public GameObject playerPrefab;
         private GameObject instance;
         private GameObject MyPlayer;
-        private int RandomOption;
 
         #endregion
 
@@ -37,8 +34,7 @@ namespace SA//Okizeme.Fight
         void Start()
         {
             Instance = this;
-            RandomOption = Random.Range(0, playersPrefab.Length);
-            playerPrefab = playersPrefab[RandomOption];
+
             // in case we started this demo with the wrong scene being active, simply load the menu scene
             if (!PhotonNetwork.connected)
             {
