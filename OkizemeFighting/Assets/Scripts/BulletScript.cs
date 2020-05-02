@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SA
+//namespace Okizeme.Fight
 {
     public class BulletScript : Photon.PunBehaviour
     {
@@ -36,12 +37,12 @@ namespace SA
             if (alreadyHit)
                 return;
 
-            if (this.photonView.isMine && hitInfo.gameObject.tag == "Player")
+            PlayerManager enemy = hitInfo.GetComponent<PlayerManager>();
+            if (this.photonView.isMine && enemy != null)
             {
-                PlayerManager enemy = hitInfo.transform.GetComponentInParent(typeof(PlayerManager)) as PlayerManager;
                 alreadyHit = true;
                 timer = 0f;
-                Debug.Log("Is an ennemy" + enemy + "-" + hitInfo.gameObject);
+                Debug.Log("Is an ennemy");
                 enemy.SendMessage("DamageEnemy", DamagePerSpell);
             }
             else
@@ -57,7 +58,7 @@ namespace SA
             {
                 Debug.Log("It's enemy's bullet");
                 GetComponent<SpriteRenderer>().enabled = false;
-                GetComponent<PolygonCollider2D>().enabled = false;
+                GetComponent<CircleCollider2D>().enabled = false;
             }
 
         }

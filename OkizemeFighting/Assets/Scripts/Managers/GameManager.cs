@@ -6,193 +6,193 @@ using UnityEngine.SceneManagement;
 
 namespace SA
 {
-	public class GameManager : MonoBehaviour
-	{
-		public ResourcesManager resourcesManager;
-		public bool isMultiplayer;
-		[System.NonSerialized]
-		public PlayerHolder[] all_players;
+    public class GameManager : MonoBehaviour
+    {
+        public ResourcesManager resourcesManager;
+        public bool isMultiplayer;
+        [System.NonSerialized]
+        public PlayerHolder[] all_players;
 
-		public PlayerHolder GetEnemyOf(PlayerHolder p)
-		{
-			for (int i = 0; i < all_players.Length; i++)
-			{
-				if (all_players[i] != p)
-				{
-					return all_players[i];
-				}
-			}
+        public PlayerHolder GetEnemyOf(PlayerHolder p)
+        {
+            for (int i = 0; i < all_players.Length; i++)
+            {
+                if (all_players[i] != p)
+                {
+                    return all_players[i];
+                }
+            }
 
-			return null;
-		}
-		
-		public PlayerHolder currentPlayer;
+            return null;
+        }
 
-		public PlayerHolder localPlayer;
-		public PlayerHolder clientPlayer;
-		public CardHolders playerOneHolder;
-		public CardHolders otherPlayersHolder;
+        public PlayerHolder currentPlayer;
 
-		public State currentState;
-		public GameObject cardPrefab;
+        public PlayerHolder localPlayer;
+        public PlayerHolder clientPlayer;
+        public CardHolders playerOneHolder;
+        public CardHolders otherPlayersHolder;
 
-		public int turnIndex;
-		public Turn[] turns;
-		public SO.GameEvent onTurnChanged;
-		public SO.GameEvent onPhaseChanged;
-		public SO.StringVariable turnText;
+        public State currentState;
+        public GameObject cardPrefab;
 
-		public PlayerStatsUI[] statsUI;
-		public SO.TransformVariable graveyardVariable;
-		List<CardInstance> graveyardCards = new List<CardInstance>();
-		public Element defenceProperty;
+        public int turnIndex;
+        public Turn[] turns;
+        public SO.GameEvent onTurnChanged;
+        public SO.GameEvent onPhaseChanged;
+        public SO.StringVariable turnText;
 
-		bool isInit;
+        public PlayerStatsUI[] statsUI;
+        public SO.TransformVariable graveyardVariable;
+        List<CardInstance> graveyardCards = new List<CardInstance>();
+        public Element defenceProperty;
 
-		Dictionary<CardInstance, BlockInstance> blockInstances = new Dictionary<CardInstance, BlockInstance>();
+        bool isInit;
 
-		public Dictionary<CardInstance,BlockInstance> GetBlockInstances()
-		{
-			return blockInstances;
-		}
+        Dictionary<CardInstance, BlockInstance> blockInstances = new Dictionary<CardInstance, BlockInstance>();
 
-		public void ClearBlockInstances()
-		{
-			blockInstances.Clear();
-		}
+        public Dictionary<CardInstance, BlockInstance> GetBlockInstances()
+        {
+            return blockInstances;
+        }
 
-		public void AddBlockInstance(CardInstance attacker, CardInstance blocker, ref int count)
-		{
-			BlockInstance b = null;
-			b = GetBlockInstanceOfAttacker(attacker);
-			if (b == null)
-			{
-				b = new BlockInstance();
-				b.attacker = attacker;
-				blockInstances.Add(attacker, b);
-			}
+        public void ClearBlockInstances()
+        {
+            blockInstances.Clear();
+        }
 
-			if(!b.blocker.Contains(blocker))
-				b.blocker.Add(blocker);
+        public void AddBlockInstance(CardInstance attacker, CardInstance blocker, ref int count)
+        {
+            BlockInstance b = null;
+            b = GetBlockInstanceOfAttacker(attacker);
+            if (b == null)
+            {
+                b = new BlockInstance();
+                b.attacker = attacker;
+                blockInstances.Add(attacker, b);
+            }
 
-			count = b.blocker.Count;
-		}
+            if (!b.blocker.Contains(blocker))
+                b.blocker.Add(blocker);
 
-		BlockInstance GetBlockInstanceOfAttacker(CardInstance attacker)
-		{
-			BlockInstance r = null;
-			blockInstances.TryGetValue(attacker, out r);
-			return r;
-		}
+            count = b.blocker.Count;
+        }
 
-		public static GameManager singleton;
+        BlockInstance GetBlockInstanceOfAttacker(CardInstance attacker)
+        {
+            BlockInstance r = null;
+            blockInstances.TryGetValue(attacker, out r);
+            return r;
+        }
 
-		private void Awake()
-		{
-			Settings.gameManager = this;
-			singleton = this;
-		}
+        public static GameManager singleton;
 
-		public void InitGame(int startingPlayer)
-		{
+        private void Awake()
+        {
+            Settings.gameManager = this;
+            singleton = this;
+        }
+
+        public void InitGame(int startingPlayer)
+        {
             Debug.Log("Debut de la partie");
-			all_players = new PlayerHolder[turns.Length];
-			Turn[] _turns = new Turn[2];
-			for (int i = 0; i < turns.Length; i++)
-			{
-				all_players[i] = turns[i].player;
+            all_players = new PlayerHolder[turns.Length];
+            Turn[] _turns = new Turn[2];
+            for (int i = 0; i < turns.Length; i++)
+            {
+                all_players[i] = turns[i].player;
 
-				if (all_players[i].photonId == startingPlayer)
-				{
-					_turns[0] = turns[i];
-				}
-				else
-				{
-					_turns[1] = turns[i];
-				}
-			}
+                if (all_players[i].photonId == startingPlayer)
+                {
+                    _turns[0] = turns[i];
+                }
+                else
+                {
+                    _turns[1] = turns[i];
+                }
+            }
             Debug.Log("Joueur 1 commence (" + _turns[0].name + ")");
-            Debug.Log("Joueur 2 joue en deuxieme (" +_turns[1].name +")");
+            Debug.Log("Joueur 2 joue en deuxieme (" + _turns[1].name + ")");
             turns = _turns;
-		
-			SetupPlayers();
 
-			turnText.value = turns[turnIndex].player.username;
-			onTurnChanged.Raise();
-			turns[0].OnTurnStart();
-			isInit = true;
-		}
+            SetupPlayers();
 
-		void SetupPlayers()
-		{
-			ResourcesManager rm = Settings.GetResourcesManager();
+            turnText.value = turns[turnIndex].player.username;
+            onTurnChanged.Raise();
+            turns[0].OnTurnStart();
+            isInit = true;
+        }
 
-			for (int i = 0; i < all_players.Length; i++)
-			{
-				all_players[i].Init();
+        void SetupPlayers()
+        {
+            ResourcesManager rm = Settings.GetResourcesManager();
 
-				if (i == 0)
-				{
-					all_players[i].currentHolder = playerOneHolder;
-				}
-				else
-				{
-					all_players[i].currentHolder = otherPlayersHolder;	
-				}
+            for (int i = 0; i < all_players.Length; i++)
+            {
+                all_players[i].Init();
 
-				all_players[i].statsUI = statsUI[i];
-				all_players[i].currentHolder.LoadPlayer(all_players[i], all_players[i].statsUI);
-			}
+                if (i == 0)
+                {
+                    all_players[i].currentHolder = playerOneHolder;
+                }
+                else
+                {
+                    all_players[i].currentHolder = otherPlayersHolder;
+                }
+
+                all_players[i].statsUI = statsUI[i];
+                all_players[i].currentHolder.LoadPlayer(all_players[i], all_players[i].statsUI);
+            }
             Debug.Log("Setup de chaque joueur");
         }
 
-		public void PickNewCardFromDeck(PlayerHolder p)
-		{
-			MultiplayerManager.singleton.PlayerPicksCardFromDeck(p);
-		}
+        public void PickNewCardFromDeck(PlayerHolder p)
+        {
+            MultiplayerManager.singleton.PlayerPicksCardFromDeck(p);
+        }
 
-		public void LoadPlayerOnActive(PlayerHolder p)
-		{
-			PlayerHolder prevPlayer = playerOneHolder.playerHolder;
-			if(prevPlayer != p)
-				LoadPlayerOnHolder(prevPlayer, otherPlayersHolder, statsUI[1]);
-			LoadPlayerOnHolder(p, playerOneHolder, statsUI[0]);
-		}
+        public void LoadPlayerOnActive(PlayerHolder p)
+        {
+            PlayerHolder prevPlayer = playerOneHolder.playerHolder;
+            if (prevPlayer != p)
+                LoadPlayerOnHolder(prevPlayer, otherPlayersHolder, statsUI[1]);
+            LoadPlayerOnHolder(p, playerOneHolder, statsUI[0]);
+        }
 
-		public void LoadPlayerOnHolder(PlayerHolder p,CardHolders h, PlayerStatsUI ui)
-		{
-			h.LoadPlayer(p, ui);
-		}
-		
-		private void Update()
-		{
+        public void LoadPlayerOnHolder(PlayerHolder p, CardHolders h, PlayerStatsUI ui)
+        {
+            h.LoadPlayer(p, ui);
+        }
+
+        private void Update()
+        {
             //Debug.Log(turns[turnIndex].name);
-            
-			if (!isInit)
-				return;
-			bool isComplete = turns[turnIndex].Execute();
+
+            if (!isInit)
+                return;
+            bool isComplete = turns[turnIndex].Execute();
             if (Fight.IsLoose && Fight.IsResolve)
             {
-                localPlayer.health -= 3;
+               // localPlayer.health -= 3;
                 PutCardToGraveyard(localPlayer.cardsDown[0]);
                 Fight.IsResolve = false;
-              //  MainDataHolder dataHolder;
-              //  clientPlayer.cardsDown[0].viz.card.GetProperty(dataHolder.attackElement);
-               // MultiplayerManager.singleton.SetBattleResolvePhase();
+                //  MainDataHolder dataHolder;
+                //  clientPlayer.cardsDown[0].viz.card.GetProperty(dataHolder.attackElement);
+                // MultiplayerManager.singleton.SetBattleResolvePhase();
                 //MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
             }
             else if (Fight.IsResolve)
             {
-                clientPlayer.health -= 3;
+               // clientPlayer.health -= 3;
                 PutCardToGraveyard(clientPlayer.cardsDown[0]);
                 Fight.IsResolve = false;
-              // MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
+                // MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
             }
 
             if (clientPlayer.health < 1)
-                {
-                    SceneManager.LoadScene("YouWon");
-                }
+            {
+                SceneManager.LoadScene("YouWon");
+            }
 
 
             /*		if (!isMultiplayer)
@@ -217,81 +217,81 @@ namespace SA
                     {*/
 
             if (isComplete)
-                {
-                    MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
-				}
-			//}
+            {
+                MultiplayerManager.singleton.PlayerEndsTurn(currentPlayer.photonId);
+            }
+            //}
 
-			if(currentState != null)
-				currentState.Tick(Time.deltaTime);
-		}
+            if (currentState != null)
+                currentState.Tick(Time.deltaTime);
+        }
 
-		public int GetNextPlayerID()
-		{
-			int r = turnIndex;
+        public int GetNextPlayerID()
+        {
+            int r = turnIndex;
 
-			r++;
-			if (r > turns.Length-1)
-			{
-				r = 0;
-			}
+            r++;
+            if (r > turns.Length - 1)
+            {
+                r = 0;
+            }
 
-			return turns[r].player.photonId;
-		}
+            return turns[r].player.photonId;
+        }
 
-		int GetPlayerTurnIndex(int photonID)
-		{
-			for (int i = 0; i < turns.Length; i++)
-			{
-				if (turns[i].player.photonId == photonID)
-					return i;
-			}
+        int GetPlayerTurnIndex(int photonID)
+        {
+            for (int i = 0; i < turns.Length; i++)
+            {
+                if (turns[i].player.photonId == photonID)
+                    return i;
+            }
 
-			return -1;
-		}
+            return -1;
+        }
 
-		public void ChangeCurrentTurn(int photonId)
-		{
-			turnIndex = GetPlayerTurnIndex(photonId);
-			currentPlayer = turns[turnIndex].player;
+        public void ChangeCurrentTurn(int photonId)
+        {
+            turnIndex = GetPlayerTurnIndex(photonId);
+            currentPlayer = turns[turnIndex].player;
             Debug.Log("<color=green>Joueur " + (turnIndex + 1) + " commence son tour</color>");
-			turns[turnIndex].OnTurnStart();
-			turnText.value = turns[turnIndex].player.username;
-			onTurnChanged.Raise();
-		}
+            turns[turnIndex].OnTurnStart();
+            turnText.value = turns[turnIndex].player.username;
+            onTurnChanged.Raise();
+        }
 
-		public void SetState(State state)
-		{
-			currentState = state;
-		}
+        public void SetState(State state)
+        {
+            currentState = state;
+        }
 
-		public void EndCurrentPhase()
-		{
-		//	if (currentPlayer.isHumanPlayer)
-		//	{
-			//	Settings.RegisterEvent(turns[turnIndex].name + " finished", currentPlayer.playerColor);
-				turns[turnIndex].EndCurrentPhase();
-			//}
-		}
+        public void EndCurrentPhase()
+        {
+            //	if (currentPlayer.isHumanPlayer)
+            //	{
+            //	Settings.RegisterEvent(turns[turnIndex].name + " finished", currentPlayer.playerColor);
+            turns[turnIndex].EndCurrentPhase();
+            //}
+        }
 
-		public void PutCardToGraveyard(CardInstance c)
-		{
-			c.owner.CardToGraveyard(c);
-			graveyardCards.Add(c);
-			c.transform.SetParent(graveyardVariable.value);
-			Vector3 p = Vector3.zero;
-			p.x -= graveyardCards.Count * 5;
-			p.z = graveyardCards.Count * 5;
-			c.transform.localPosition = p;
-			c.transform.localRotation = Quaternion.identity;
-			c.transform.localScale = Vector3.one;
-			
-		}
+        public void PutCardToGraveyard(CardInstance c)
+        {
+            c.owner.CardToGraveyard(c);
+            graveyardCards.Add(c);
+            c.transform.SetParent(graveyardVariable.value);
+            Vector3 p = Vector3.zero;
+            p.x -= graveyardCards.Count * 5;
+            p.z = graveyardCards.Count * 5;
+            c.transform.localPosition = p;
+            c.transform.localRotation = Quaternion.identity;
+            c.transform.localScale = Vector3.one;
 
-		public void LocalPlayerEndsBattleResolve()
-		{
-			Debug.Log("LocalPlayerEndsBattleResolve");
-			turns[turnIndex].EndCurrentPhase();
-		}
-	}
+        }
+
+        public void LocalPlayerEndsBattleResolve()
+        {
+            Debug.Log("LocalPlayerEndsBattleResolve");
+            turns[turnIndex].EndCurrentPhase();
+        }
+    }
 }

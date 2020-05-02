@@ -32,7 +32,7 @@ MonoBehaviour:
     sprite: {fileID: 0}
     element: {fileID: 11400000, guid: 231a946d59842b446b20b8b78f00b171, type: 2}
   - strinValue: 0
-    intValue: 3
+    intValue: 5
     sprite: {fileID: 0}
     element: {fileID: 11400000, guid: 77b3c1637928693409a20a6b4f9f7214, type: 2}
   - strinValue: 0

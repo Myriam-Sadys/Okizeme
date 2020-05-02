@@ -1,7 +1,18 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlayerManager.cs" company="Exit Games GmbH">
+//   Part of: Photon Unity Networking Demos
+// </copyright>
+// <summary>
+//  Used in DemoAnimator to deal with the networked player instance
+// </summary>
+// <author>developer@exitgames.com</author>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace SA
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
+namespace SA //Okizeme.Fight
 {
     public class PlayerManager : Photon.PunBehaviour, IPunObservable
     {
@@ -64,14 +75,14 @@ namespace SA
 
             // #Important
             // used in GameManager.cs: we keep track of the localPlayer instance to prevent instanciation when levels are synchronized
-
+            if (photonView.isMine)
             {
                 LocalPlayerInstance = gameObject;
             }
 
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         /// <summary>
@@ -122,10 +133,25 @@ namespace SA
                 horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
                 animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-
-                if (this.Health <= 0f)
+                if (Fight.ennemyDead)
                 {
-                    NetworkManagerPUN.Instance.LeaveRoom();
+                    Debug.Log("test");
+                    Fight.IsLoose = false;
+                    Fight.IsResolve = true;
+                    SceneManager.UnloadSceneAsync("FightScene");
+                    Fight.IsFight = false;
+                    Destroy(this);
+                }
+
+                else if (this.Health <= 0f)
+                {
+                    Imdead();
+                    Fight.IsLoose = true;
+                    Debug.Log("perdu");
+                    Fight.IsResolve = true;
+                    SceneManager.UnloadSceneAsync("FightScene");
+                    Fight.IsFight = false;
+                    Destroy(this);
                 }
 
             }
@@ -177,18 +203,18 @@ namespace SA
             if (Input.GetButtonDown("Jump"))
             {
                 jump = true;
-                animator.SetTrigger("jump_t");
+                animator.SetBool("IsJumping", true);
             }
 
             if (Input.GetButtonDown("AttackA"))
             {
-                animator.SetTrigger("attack_t");
+                animator.SetTrigger("AttackA");
                 RaycastHit2D hit;
                 Debug.DrawLine(firePoint.transform.position, transform.position + transform.right * 100, Color.red, 2.5f);
                 hit = Physics2D.Raycast(firePoint.position, transform.position + transform.right * 100, Mathf.Infinity);
-                if (hit.collider.tag == "Player" && hit.distance == 0)
+                if (hit.collider.name == "PlayerObject(Clone)" && hit.distance == 0)
                 {
-                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name + " tag: " + hit.collider.tag);
+                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
                     hit.transform.GetComponent<PlayerManager>().SendMessage("DamageEnemy", DamagePerHit);
                     PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, ZemePerDamageDone);
                 }
@@ -198,7 +224,7 @@ namespace SA
             }
             else if (Input.GetButtonUp("AttackA"))
             {
-                animator.ResetTrigger("attack_t");
+                animator.ResetTrigger("AttackA");
                 punch = false;
             }
 
@@ -207,27 +233,17 @@ namespace SA
                 if (ZemePoints >= ZemeCostSpell)
                 {
                     PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, -ZemeCostSpell);
-                    animator.SetTrigger("special_3_t");
+                    animator.SetTrigger("AttackB");
                     GameObject clone = PhotonNetwork.Instantiate(spellPrefab.name, firePoint.transform.position, firePoint.transform.rotation, 0);
                     ProjectileLaunched = true;
                 }
             }
             else if (Input.GetButtonUp("AttackB"))
             {
-                animator.ResetTrigger("special_3_t");
+                animator.ResetTrigger("AttackB");
                 ProjectileLaunched = false;
             }
 
-            //if (Input.GetButtonDown("Guard"))
-            //{
-            //    animator.SetTrigger("defend_t");
-            //    block = true;
-            //}
-            //else if (Input.GetButtonUp("Guard"))
-            //{
-            //    animator.ResetTrigger("defend_t");
-            //    block = false;
-            //}
             if (Input.GetButtonDown("Guard"))
             {
                 animator.SetBool("IsBlocking", true);
@@ -253,6 +269,18 @@ namespace SA
                 pos.y += 0.25f;
                 firePoint.transform.position = pos;
             }
+        }
+
+        private void Imdead()
+        {
+            PhotonView.Get(this).RPC("ImDeads", PhotonTargets.Others, "Prune");
+        }
+
+        [PunRPC]
+        private void ImDeads(string fruit)
+        {
+            Debug.Log("<color=orange>" + fruit + "</color>");
+            Fight.ennemyDead = true;
         }
 
         private void DamageEnemy(float dmg)
@@ -293,13 +321,13 @@ namespace SA
 
         public void OnCrouching(bool isCrouching)
         {
-            //animator.SetBool("IsCrouching", crouch);
+            animator.SetBool("IsCrouching", crouch);
         }
 
         public void OnLanding()
         {
             if (animator != null)
-                animator.ResetTrigger("jump_t");
+                animator.SetBool("IsJumping", false);
         }
 
         public void GainZemePoints(int value)
