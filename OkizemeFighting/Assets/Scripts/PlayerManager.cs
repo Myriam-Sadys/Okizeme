@@ -198,23 +198,96 @@ namespace SA //Okizeme.Fight
         /// <summary>
         /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
         /// </summary>
+        //void ProcessInputs()
+        //{
+        //    if (Input.GetButtonDown("Jump"))
+        //    {
+        //        jump = true;
+        //        animator.SetBool("IsJumping", true);
+        //    }
+
+        //    if (Input.GetButtonDown("AttackA"))
+        //    {
+        //        animator.SetTrigger("AttackA");
+        //        RaycastHit2D hit;
+        //        Debug.DrawLine(firePoint.transform.position, transform.position + transform.right * 100, Color.red, 2.5f);
+        //        hit = Physics2D.Raycast(firePoint.position, transform.position + transform.right * 100, Mathf.Infinity);
+        //        if (hit.collider.name == "PlayerObject(Clone)" && hit.distance == 0)
+        //        {
+        //            Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+        //            hit.transform.GetComponent<PlayerManager>().SendMessage("DamageEnemy", DamagePerHit);
+        //            PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, ZemePerDamageDone);
+        //        }
+        //        else
+        //            Debug.Log("Missed Player ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+        //        punch = true;
+        //    }
+        //    else if (Input.GetButtonUp("AttackA"))
+        //    {
+        //        animator.ResetTrigger("AttackA");
+        //        punch = false;
+        //    }
+
+        //    if (Input.GetButtonDown("AttackB") && ProjectileLaunched == false)
+        //    {
+        //        if (ZemePoints >= ZemeCostSpell)
+        //        {
+        //            PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, -ZemeCostSpell);
+        //            animator.SetTrigger("AttackB");
+        //            GameObject clone = PhotonNetwork.Instantiate(spellPrefab.name, firePoint.transform.position, firePoint.transform.rotation, 0);
+        //            ProjectileLaunched = true;
+        //        }
+        //    }
+        //    else if (Input.GetButtonUp("AttackB"))
+        //    {
+        //        animator.ResetTrigger("AttackB");
+        //        ProjectileLaunched = false;
+        //    }
+
+        //    if (Input.GetButtonDown("Guard"))
+        //    {
+        //        animator.SetBool("IsBlocking", true);
+        //        block = true;
+        //    }
+        //    else if (Input.GetButtonUp("Guard"))
+        //    {
+        //        animator.SetBool("IsBlocking", false);
+        //        block = false;
+        //    }
+
+        //    if (Input.GetButtonDown("Crouch"))
+        //    {
+        //        crouch = true;
+        //        var pos = firePoint.transform.position;
+        //        pos.y -= 0.25f;
+        //        firePoint.transform.position = pos;
+        //    }
+        //    else if (Input.GetButtonUp("Crouch"))
+        //    {
+        //        crouch = false;
+        //        var pos = firePoint.transform.position;
+        //        pos.y += 0.25f;
+        //        firePoint.transform.position = pos;
+        //    }
+        //}
+
         void ProcessInputs()
         {
             if (Input.GetButtonDown("Jump"))
             {
                 jump = true;
-                animator.SetBool("IsJumping", true);
+                animator.SetTrigger("jump_t");
             }
 
             if (Input.GetButtonDown("AttackA"))
             {
-                animator.SetTrigger("AttackA");
+                animator.SetTrigger("attack_t");
                 RaycastHit2D hit;
                 Debug.DrawLine(firePoint.transform.position, transform.position + transform.right * 100, Color.red, 2.5f);
                 hit = Physics2D.Raycast(firePoint.position, transform.position + transform.right * 100, Mathf.Infinity);
-                if (hit.collider.name == "PlayerObject(Clone)" && hit.distance == 0)
+                if (hit.collider.tag == "Player" && hit.distance == 0)
                 {
-                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+                    Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name + " tag: " + hit.collider.tag);
                     hit.transform.GetComponent<PlayerManager>().SendMessage("DamageEnemy", DamagePerHit);
                     PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, ZemePerDamageDone);
                 }
@@ -224,7 +297,7 @@ namespace SA //Okizeme.Fight
             }
             else if (Input.GetButtonUp("AttackA"))
             {
-                animator.ResetTrigger("AttackA");
+                animator.ResetTrigger("attack_t");
                 punch = false;
             }
 
@@ -233,17 +306,27 @@ namespace SA //Okizeme.Fight
                 if (ZemePoints >= ZemeCostSpell)
                 {
                     PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, -ZemeCostSpell);
-                    animator.SetTrigger("AttackB");
+                    animator.SetTrigger("special_3_t");
                     GameObject clone = PhotonNetwork.Instantiate(spellPrefab.name, firePoint.transform.position, firePoint.transform.rotation, 0);
                     ProjectileLaunched = true;
                 }
             }
             else if (Input.GetButtonUp("AttackB"))
             {
-                animator.ResetTrigger("AttackB");
+                animator.ResetTrigger("special_3_t");
                 ProjectileLaunched = false;
             }
 
+            //if (Input.GetButtonDown("Guard"))
+            //{
+            //    animator.SetTrigger("defend_t");
+            //    block = true;
+            //}
+            //else if (Input.GetButtonUp("Guard"))
+            //{
+            //    animator.ResetTrigger("defend_t");
+            //    block = false;
+            //}
             if (Input.GetButtonDown("Guard"))
             {
                 animator.SetBool("IsBlocking", true);
