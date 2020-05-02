@@ -55,7 +55,7 @@ namespace SA//Okizeme.Fight
         /// </summary>
         void Awake()
         {
-            this.GetComponent<Transform>().SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
+            //this.GetComponent<Transform>().SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
         }
 
         /// <summary>
