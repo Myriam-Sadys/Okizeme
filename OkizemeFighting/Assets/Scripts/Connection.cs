@@ -42,68 +42,44 @@ public class Connection : MonoBehaviour
         if (GameInstanceManager.m_gim.m_password != "")
             Password = GameInstanceManager.m_gim.m_password;
         Token = GameInstanceManager.m_gim.m_token;
-        Debug.Log("Token: " + Token);
         if (Token != "" && Password != "")
         {
-            Connect = true;
-            //Login();
+            Login();
         }
         else
         {
             Connect = false;
             if (UserAdress != "")
                 SetInfos = true;
-            Menu.gameObject.SetActive(false);
-        }
-        //APIurl = "https://api.okizeme.dahobul.com/";
-        //ConnectionTry = 0;
-        //CreateAccount = false;
-        //UserName = GameInstanceManager.m_gim.m_userName;
-        //UserAdress = GameInstanceManager.m_gim.m_email;
-        //ConfirmPassword = "";
-        //if (GameInstanceManager.m_gim.m_password != "")
-        //    Password = GameInstanceManager.m_gim.m_password;
-        //Token = GameInstanceManager.m_gim.m_token;
-        //Debug.Log("Token: " + Token);
-        //if (Token != "" && Password != "")
-        //{
-        //    Connect = true;
-        //    // Login();
-        //}
-        //else
-        //{
-        //    Connect = false;
-        //    if (UserAdress != "")
-        //        SetInfos = true;
-        //    Menu.gameObject.SetActive(false);
-        //}
-    }
-
-    public void Awake()
-    {
-        APIurl = "https://api.okizeme.dahobul.com/";
-        ConnectionTry = 0;
-        CreateAccount = false;
-        UserName = GameInstanceManager.m_gim.m_userName;
-        UserAdress = GameInstanceManager.m_gim.m_email;
-        ConfirmPassword = "";
-        if (GameInstanceManager.m_gim.m_password != "")
-            Password = GameInstanceManager.m_gim.m_password;
-        Token = GameInstanceManager.m_gim.m_token;
-        Debug.Log("Token: " + Token);
-        if (Token != "" && Password != "")
-        {
-            Connect = true;
-             Login();
-        }
-        else
-        {
-            if (UserAdress != "")
-                SetInfos = true;
-            Connect = false;
             Menu.gameObject.SetActive(false);
         }
     }
+
+    //public void Awake()
+    //{
+    //    APIurl = "https://api.okizeme.dahobul.com/";
+    //    ConnectionTry = 0;
+    //    CreateAccount = false;
+    //    UserName = GameInstanceManager.m_gim.m_userName;
+    //    UserAdress = GameInstanceManager.m_gim.m_email;
+    //    ConfirmPassword = "";
+    //    if (GameInstanceManager.m_gim.m_password != "")
+    //        Password = GameInstanceManager.m_gim.m_password;
+    //    Token = GameInstanceManager.m_gim.m_token;
+    //    Debug.Log("Token: " + Token);
+    //    if (Token != "" && Password != "")
+    //    {
+    //        Connect = true;
+    //        Login();
+    //    }
+    //    else
+    //    {
+    //        if (UserAdress != "")
+    //            SetInfos = true;
+    //        Connect = false;
+    //        Menu.gameObject.SetActive(false);
+    //    }
+    //}
 
     void Update()
     {
@@ -204,6 +180,7 @@ public class Connection : MonoBehaviour
                 string toEdit = data["token"].ToString();
                 Token = toEdit.Substring(1, toEdit.Length - 2);
                 Connect = true;
+                SetInfos = true;
                 SetUserData();
                 break;
             case "\"invalid_username\"":
