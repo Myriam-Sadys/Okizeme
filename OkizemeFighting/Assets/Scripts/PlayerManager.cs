@@ -1,7 +1,18 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlayerManager.cs" company="Exit Games GmbH">
+//   Part of: Photon Unity Networking Demos
+// </copyright>
+// <summary>
+//  Used in DemoAnimator to deal with the networked player instance
+// </summary>
+// <author>developer@exitgames.com</author>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace SA
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
+namespace SA //Okizeme.Fight
 {
     public class PlayerManager : Photon.PunBehaviour, IPunObservable
     {
@@ -64,14 +75,14 @@ namespace SA
 
             // #Important
             // used in GameManager.cs: we keep track of the localPlayer instance to prevent instanciation when levels are synchronized
-
+            if (photonView.isMine)
             {
                 LocalPlayerInstance = gameObject;
             }
 
             // #Critical
             // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         /// <summary>
@@ -122,10 +133,25 @@ namespace SA
                 horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
                 animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-
-                if (this.Health <= 0f)
+                if (Fight.ennemyDead)
                 {
-                    NetworkManagerPUN.Instance.LeaveRoom();
+                    Debug.Log("test");
+                    Fight.IsLoose = false;
+                    Fight.IsResolve = true;
+                    SceneManager.UnloadSceneAsync("FightScene");
+                    Fight.IsFight = false;
+                    Destroy(this);
+                }
+
+                else if (this.Health <= 0f)
+                {
+                    Imdead();
+                    Fight.IsLoose = true;
+                    Debug.Log("perdu");
+                    Fight.IsResolve = true;
+                    SceneManager.UnloadSceneAsync("FightScene");
+                    Fight.IsFight = false;
+                    Destroy(this);
                 }
 
             }
@@ -172,6 +198,79 @@ namespace SA
         /// <summary>
         /// Processes the inputs. This MUST ONLY BE USED when the player has authority over this Networked GameObject (photonView.isMine == true)
         /// </summary>
+        //void ProcessInputs()
+        //{
+        //    if (Input.GetButtonDown("Jump"))
+        //    {
+        //        jump = true;
+        //        animator.SetBool("IsJumping", true);
+        //    }
+
+        //    if (Input.GetButtonDown("AttackA"))
+        //    {
+        //        animator.SetTrigger("AttackA");
+        //        RaycastHit2D hit;
+        //        Debug.DrawLine(firePoint.transform.position, transform.position + transform.right * 100, Color.red, 2.5f);
+        //        hit = Physics2D.Raycast(firePoint.position, transform.position + transform.right * 100, Mathf.Infinity);
+        //        if (hit.collider.name == "PlayerObject(Clone)" && hit.distance == 0)
+        //        {
+        //            Debug.Log("HIT ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+        //            hit.transform.GetComponent<PlayerManager>().SendMessage("DamageEnemy", DamagePerHit);
+        //            PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, ZemePerDamageDone);
+        //        }
+        //        else
+        //            Debug.Log("Missed Player ! Found an object - distance: " + hit.distance + " name: " + hit.collider.name);
+        //        punch = true;
+        //    }
+        //    else if (Input.GetButtonUp("AttackA"))
+        //    {
+        //        animator.ResetTrigger("AttackA");
+        //        punch = false;
+        //    }
+
+        //    if (Input.GetButtonDown("AttackB") && ProjectileLaunched == false)
+        //    {
+        //        if (ZemePoints >= ZemeCostSpell)
+        //        {
+        //            PhotonView.Get(this).RPC("GainZeme", PhotonTargets.All, -ZemeCostSpell);
+        //            animator.SetTrigger("AttackB");
+        //            GameObject clone = PhotonNetwork.Instantiate(spellPrefab.name, firePoint.transform.position, firePoint.transform.rotation, 0);
+        //            ProjectileLaunched = true;
+        //        }
+        //    }
+        //    else if (Input.GetButtonUp("AttackB"))
+        //    {
+        //        animator.ResetTrigger("AttackB");
+        //        ProjectileLaunched = false;
+        //    }
+
+        //    if (Input.GetButtonDown("Guard"))
+        //    {
+        //        animator.SetBool("IsBlocking", true);
+        //        block = true;
+        //    }
+        //    else if (Input.GetButtonUp("Guard"))
+        //    {
+        //        animator.SetBool("IsBlocking", false);
+        //        block = false;
+        //    }
+
+        //    if (Input.GetButtonDown("Crouch"))
+        //    {
+        //        crouch = true;
+        //        var pos = firePoint.transform.position;
+        //        pos.y -= 0.25f;
+        //        firePoint.transform.position = pos;
+        //    }
+        //    else if (Input.GetButtonUp("Crouch"))
+        //    {
+        //        crouch = false;
+        //        var pos = firePoint.transform.position;
+        //        pos.y += 0.25f;
+        //        firePoint.transform.position = pos;
+        //    }
+        //}
+
         void ProcessInputs()
         {
             if (Input.GetButtonDown("Jump"))
@@ -255,6 +354,18 @@ namespace SA
             }
         }
 
+        private void Imdead()
+        {
+            PhotonView.Get(this).RPC("ImDeads", PhotonTargets.Others, "Prune");
+        }
+
+        [PunRPC]
+        private void ImDeads(string fruit)
+        {
+            Debug.Log("<color=orange>" + fruit + "</color>");
+            Fight.ennemyDead = true;
+        }
+
         private void DamageEnemy(float dmg)
         {
             PhotonView.Get(this).RPC("DealsDamage", PhotonTargets.All, dmg);
@@ -293,13 +404,13 @@ namespace SA
 
         public void OnCrouching(bool isCrouching)
         {
-            //animator.SetBool("IsCrouching", crouch);
+            animator.SetBool("IsCrouching", crouch);
         }
 
         public void OnLanding()
         {
             if (animator != null)
-                animator.ResetTrigger("jump_t");
+                animator.SetBool("IsJumping", false);
         }
 
         public void GainZemePoints(int value)

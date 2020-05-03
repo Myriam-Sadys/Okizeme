@@ -38,7 +38,9 @@ namespace SA//Okizeme.Fight
         {
             Instance = this;
             RandomOption = Random.Range(0, playersPrefab.Length);
+            Debug.Log(playersPrefab.Length);
             playerPrefab = playersPrefab[RandomOption];
+            PhotonNetwork.playerName = playerPrefab.name;
             // in case we started this demo with the wrong scene being active, simply load the menu scene
             if (!PhotonNetwork.connected)
             {

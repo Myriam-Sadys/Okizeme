@@ -1187,11 +1187,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersPrefab:
   - {fileID: 7265400123426853143, guid: 4d4a3654ff2abf240a037c9c73ebd0bc, type: 3}
-  - {fileID: 7462629115872826275, guid: b52c0dde152ae9442a58d39c82d43c34, type: 3}
   - {fileID: 1621494574842343755, guid: 3ea8cc7514eb27445b9e5a8ed6f11e65, type: 3}
   - {fileID: 7237120809796982672, guid: db0c5727d14c119428738bcb2a775a51, type: 3}
+  - {fileID: 7462629115872826275, guid: b52c0dde152ae9442a58d39c82d43c34, type: 3}
   SpawnPoint1: {fileID: 621305927}
   SpawnPoint2: {fileID: 225351049}
+  playerPrefab: {fileID: 7265400123426853143, guid: 4d4a3654ff2abf240a037c9c73ebd0bc,
+    type: 3}
 --- !u!4 &345362516
 Transform:
   m_ObjectHideFlags: 0
