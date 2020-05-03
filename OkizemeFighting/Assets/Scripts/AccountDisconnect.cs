@@ -30,6 +30,6 @@ public class AccountDisconnect : MonoBehaviour
     public void Disconnect()
     {
         GameInstanceManager.m_gim.UnsetToken();
-        Application.LoadLevel(SceneToLoad);
+        //Application.LoadLevel(SceneToLoad);
     }
 }

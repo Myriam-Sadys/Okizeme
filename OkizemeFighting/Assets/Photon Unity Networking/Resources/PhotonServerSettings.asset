@@ -63,4 +63,5 @@ MonoBehaviour:
   - RPC_ResetResourcesCardsForPlayer
   - RPC_SyncPlayerHealth
   - TaggedPlayer
+  - ImDeads
   DisableAutoOpenWizard: 1
