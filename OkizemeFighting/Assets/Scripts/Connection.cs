@@ -33,6 +33,28 @@ public class Connection : MonoBehaviour
 
     void Start()
     {
+        APIurl = "https://api.okizeme.dahobul.com/";
+        ConnectionTry = 0;
+        CreateAccount = false;
+        UserName = GameInstanceManager.m_gim.m_userName;
+        UserAdress = GameInstanceManager.m_gim.m_email;
+        ConfirmPassword = "";
+        if (GameInstanceManager.m_gim.m_password != "")
+            Password = GameInstanceManager.m_gim.m_password;
+        Token = GameInstanceManager.m_gim.m_token;
+        Debug.Log("Token: " + Token);
+        if (Token != "" && Password != "")
+        {
+            Connect = true;
+            //Login();
+        }
+        else
+        {
+            Connect = false;
+            if (UserAdress != "")
+                SetInfos = true;
+            Menu.gameObject.SetActive(false);
+        }
         //APIurl = "https://api.okizeme.dahobul.com/";
         //ConnectionTry = 0;
         //CreateAccount = false;
@@ -72,7 +94,7 @@ public class Connection : MonoBehaviour
         if (Token != "" && Password != "")
         {
             Connect = true;
-            // Login();
+             Login();
         }
         else
         {
