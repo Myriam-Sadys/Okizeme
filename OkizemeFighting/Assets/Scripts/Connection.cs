@@ -85,6 +85,7 @@ public class Connection : MonoBehaviour
     {
         if (Connect)
         {
+            Connect = false;
             Debug.Log("Connect condition : " + Time.time);
             Menu.gameObject.SetActive(true);
             Menu.gameObject.GetComponent<BogusProfile>().Token = Token;

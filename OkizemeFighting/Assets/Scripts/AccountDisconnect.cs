@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class AccountDisconnect : MonoBehaviour
 {
     [SerializeField]
-    string SceneToLoad = "Menu";
+    string SceneToLoad = "Menu_update";
     [SerializeField]
     private GameObject AccountConnection;
     [SerializeField]
@@ -30,6 +30,7 @@ public class AccountDisconnect : MonoBehaviour
     public void Disconnect()
     {
         GameInstanceManager.m_gim.UnsetToken();
+        SceneManager.LoadScene(SceneToLoad);
         //Application.LoadLevel(SceneToLoad);
     }
 }
